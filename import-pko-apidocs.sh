@@ -4,15 +4,12 @@
 
 set -euo pipefail
 
-cat << 'EOF' > ./content/en/docs/help/api-reference.md
+cat << 'EOF' > ./content/en/docs/getting_started/api-reference.md
 ---
 title: "API Reference"
 draft: false
 images: []
-menu:
-  docs:
-    parent: "help"
-weight: 730
+weight: 700
 toc: false
 ---
 
@@ -44,4 +41,4 @@ _Taken from the [Kubernetes API versioning documentation](https://kubernetes.io/
 
 EOF
 
-cat $1 >> ./content/en/docs/help/api-reference.md
+cat $1 >> ./content/en/docs/getting_started/api-reference.md
