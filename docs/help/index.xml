@@ -2,8 +2,12 @@
 npm outdated [[&amp;lt;@scope&amp;gt;/]&amp;lt;pkg&amp;gt; ...] Update packages # The npm update command will update all the packages listed to the latest version (specified by the tag config), respecting semver:
 npm update [&amp;lt;pkg&amp;gt;...]</description></item><item><title>Troubleshooting</title><link>https://package-operator.run/docs/help/troubleshooting/</link><pubDate>Thu, 12 Nov 2020 15:22:20 +0100</pubDate><guid>https://package-operator.run/docs/help/troubleshooting/</guid><description>Problems updating npm packages # Delete the ./node_modules folder, and run again:
 npm install Problems with cache # Delete the temporary directories:
-npm run clean</description></item><item><title>FAQ</title><link>https://package-operator.run/docs/help/faq/</link><pubDate>Tue, 06 Oct 2020 08:49:31 +0000</pubDate><guid>https://package-operator.run/docs/help/faq/</guid><description>Hyas? # Doks is a Hyas theme build by the creator of Hyas.
+npm run clean</description></item><item><title>FAQ</title><link>https://package-operator.run/docs/help/faq/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://package-operator.run/docs/help/faq/</guid><description>Hyas? # Doks is a Hyas theme build by the creator of Hyas.
 Footer notice? # Please keep it in place.
 Keyboard shortcuts for search? # focus: Ctrl + / select: ↓ and ↑ open: Enter close: Esc Other documentation? # Netlify Hugo Can I get support? # Create a topic:
 Netlify Community Hugo Forums Doks Discussions Contact the creator? # Send h-enk a message:
-Netlify Community Hugo Forums Doks Discussions</description></item></channel></rss>
+Netlify Community Hugo Forums Doks Discussions</description></item><item><title>Handover Process</title><link>https://package-operator.run/docs/help/handover-process/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://package-operator.run/docs/help/handover-process/</guid><description>(Cluster)ObjectSet Lifecycle # stateDiagram-v2 direction LR state &amp;quot;Not Ready&amp;quot; as not_ready [*] --&amp;gt; Pending Pending --&amp;gt; Available Available --&amp;gt; not_ready Pending --&amp;gt; not_ready not_ready --&amp;gt; Available Available --&amp;gt; Archived not_ready --&amp;gt; Archived Archived --&amp;gt; [*] Pending
+Intermediate state before the controller posted it&amp;rsquo;s first update. Available
+All availability probes are successful. Not Ready
+One or more availability probes are unsuccessful. Archived
+(Cluster)ObjectSet is shutdown and only acts as a revision tombstone for rollbacks.</description></item></channel></rss>
