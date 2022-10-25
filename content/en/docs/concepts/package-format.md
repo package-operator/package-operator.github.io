@@ -6,7 +6,7 @@ weight: 800
 toc: true
 ---
 
-Package Operator packages allow to distribute all manifests that make up an application or operator deployment into a single artifact.
+Package Operator packages allow distributing all manifests that make up an application or operator deployment into a single artifact.
 
 This artifact is just an empty container image containing a `PackageManifest` and the Kubernetes manifests in an optionally nested nested folder structure.
 
@@ -106,7 +106,7 @@ package
 │       │   cache-db.yaml
 │       │   cache-config.yaml
 │       │   ...
-│   
+│
 └───backend
     │   backend-deployment.yaml
     │   backend-config.yaml
