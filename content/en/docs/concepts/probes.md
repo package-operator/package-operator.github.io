@@ -6,7 +6,7 @@ weight: 500
 toc: true
 ---
 
-Probes defines how Package Operator judges the **Availability** of objects and is reporting status.
+Probes define how Package Operator judges the **Availability** of objects and is reporting status.
 
 Defining **Availability** will depend on the specific application that is deployed.
 In general, availability should reflect the health of the complete application bundle, so Package Operator can check whether it's safe to roll over to a new revision.
