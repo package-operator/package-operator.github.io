@@ -12,7 +12,7 @@ and [kind](https://kind.sigs.k8s.io/docs/user/quick-start/).
 
 ## kubectl
 You will need the Kubernetes CLI, [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl),
-to deploy and interact with the Package Operator and your packages.
+to deploy and interact with Package Operator and your packages.
 
 ## Container Runtime
 You will need a container runtime with CLI, such as [docker](https://docs.docker.com/get-docker/) or

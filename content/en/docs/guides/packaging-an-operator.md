@@ -3,13 +3,23 @@ title: Packaging an Operator
 weight: 300
 images: []
 ---
+## Objectives
+* Create a manifest.yaml file
+* Add annotation to Kubernetes object manifest files to specify phase
+* Package all files in a Containerfile
+* Build the image
+
+## Before you begin
+This guide assumes you have all the [required software](/docs/getting_started/requirements.md) installed and have a
+Kubernetes cluster with [Package Operator installed](/docs/getting_started/installation.md).
+
 
 Packaging an operator is similar to packaging any other application. You must create a `manifest.yaml` file, add an
 annotation to every kubernetes manifest specifying the phase the object belongs to, and build everything in a
 container image.
 
-Usually a Kubernetes operator will consist of CRDs and the controller deployment??? Because the controller watches the
-CRDs, the CRDs have to be deployed before the controller deployment. This order of deployment can be specified via
+Usually a Kubernetes operator will consist of CRDs and the operator deployment. Because the operator watches the
+CRDs, the CRDs have to be deployed before the operator deployment. This order of deployment can be specified via
 `phases` in the `manifest.yaml`
 
 ## Package Manifest
@@ -46,10 +56,9 @@ availability probes on the [Probes page](/docs/concepts/probes).
 
 Next, you would have to go to all CRDs and specify that they are part of the `crds` phase by adding a
 `package-operator.run/phase: namespace` annotation. Similarly, a `package-operator.run/phase: deploy`
-annotation would have to be added to the controller manifest.
+annotation would have to be added to the operator manifest.
 
 ## Package Image
-// TODO: _The_ package operator?
 Package Operator receives these files via a non-runnable container image. The files just have to be contained in the
 `/package` directory in the image. That means, you container file could be as simple as
 
@@ -60,9 +69,8 @@ FROM scratch
 ADD . /package
 ```
 
-as long as it is placed and built in the same directory that your manifest.yaml file and Kubernetes manifest files are
-in. During the loading of the package, Package Operator will recursively go through all folders, therefore we could have
-a file structure // TODO: file structure is not the right phrase, like this:
+During the loading of the package, Package Operator will recursively go through all folders, therefore we could have
+a file structure like this:
 ```
 package
 │   manifest.yaml
@@ -83,4 +91,4 @@ podman build -t packageImage -f package.Containerfile .
 ```
 
 ## Next Steps
-See the [Installing Packages page](installing-packages.md) to see how to install packages using Package Operator.
+See the [Installing Packages page](installing-packages.md) to see how to deploy packages using Package Operator.

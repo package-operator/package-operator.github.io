@@ -11,7 +11,7 @@ Probes define how Package Operator judges the **Availability** of objects and is
 Defining **Availability** will depend on the specific application that is deployed.
 In general, availability should reflect the health of the complete application bundle, so Package Operator can check whether it's safe to roll over to a new revision.
 
-Package Operator does not providing any default probes and leaves it to the author of a package to configure probing explicitly.
+Package Operator does not provide any default probes and leaves it to the author of a package to configure probing explicitly.
 This ensures that probing of packages stays consistent throughout different Package Operator releases and allows package authors to tweak probing to their specific requirements.
 
 ## Probe Spec

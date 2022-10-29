@@ -16,8 +16,8 @@ Building packages containing multiple large objects, like CustomResourceDefiniti
 
 To get around this limitation, Package Operator allows offloading big objects into an auxiliary API `ObjectSlice`. Instead of all objects being defined inline in the parent `ObjectDeployment` or `ObjectSet` one or multiple `ObjectSlice`s can be specified.
 
-In contrast to `ObjectDeployment` the `ObjectSlice`s are immutable.
-When updating a `ObjectDeployment` a new `ObjectSlice` needs to be created, which contains the desired changes.
+In contrast to `ObjectDeployment`s, `ObjectSlice`s are immutable.
+When updating an `ObjectDeployment` a new `ObjectSlice` needs to be created, which contains the desired changes.
 Only when referencing this new slice instead of the current slice from the ObjectDeployment, will the change be applied.
 
 {{< alert text="When using the `Package` API, Package Operator will automatically split packages that reach a certain limit by using the `ObjectSlice` API." />}}
