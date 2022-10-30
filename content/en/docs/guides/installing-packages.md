@@ -10,15 +10,22 @@ This guide assumes there is already an image for the given package. If not, the
 [Packaging an Operator](packaging-an-operator.md) guide show how to package an application or an operator
 respectfully.
 
-## Package Resource
-The `Package` API is used to load these package container images into the cluster.
+## Objectives
+* Create a package object manifest
+* Deploy the package object
 
-You now just have to create a package resource, see the
-[api reference](/content/en/docs/getting_started/api-reference.md#package).
+## (Cluster)Package Object Manifest
+The `(Cluster)Package` API is used to load package container images into the cluster.
 
-Since basically everything is already contained in the image, the package resource is
-quite simple.
+The `ClusterPackage` API is used for packages that have `Cluster` in their defined scopes and the
+`Package` API is used for packages that have `Namespaced` in their defined scopes.
 
+Read more about scopes on the [Scopes page](/content/en/docs/concepts/scopes.md).
+
+Let's say we want to deploy a package that only has `Cluster` scope.Since basically everything is already contained
+in the image, the package object manifest is quite simple.
+
+package.yaml
 ```yaml
 apiVersion: package-operator.run/v1alpha1
 kind: ClusterPackage
@@ -28,4 +35,16 @@ metadata:
 spec:
   image: packageImage
 
+```
+
+See the
+[Package api reference](/content/en/docs/getting_started/api-reference.md#package) and
+[ClusterPackage api reference](/content/en/docs/getting_started/api-reference.md#clusterpackage) for
+more information.
+
+
+## Deploy Package Object
+The package object manifest can now be deployed using `kubectl`:
+```shell
+kubectl create -f package.yaml
 ```

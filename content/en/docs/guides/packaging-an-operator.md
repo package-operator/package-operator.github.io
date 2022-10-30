@@ -51,12 +51,28 @@ spec:
         group: apps
         kind: Deployment
 ```
-You can read more about phases on the [Phases page](docs/concepts/phases.md) and more about
-availability probes on the [Probes page](/docs/concepts/probes).
+A short discussion about the different fields in `.spec`.
+### Scopes
+Since the package contains a CRDs, which are cluster scoped, the only possible scope for the
+package is `Cluster`. You can read more about scopes on the [Scopes page](/content/en/docs/concepts/scopes.md).
 
-Next, you would have to go to all CRDs and specify that they are part of the `crds` phase by adding a
-`package-operator.run/phase: namespace` annotation. Similarly, a `package-operator.run/phase: deploy`
-annotation would have to be added to the operator manifest.
+### Phases
+The namespace must be created before the deployment. The Package Manifest file has two phases defined,
+`crds` and `deploy`, in that order.
+
+Read more about phases on the [Phases page](/content/en/docs/concepts/phases.md).
+
+### Availability Probes
+This is a pretty standard probe for deployment resources. You can read more about availability probes
+on the [Probes page](/content/en/docs/concepts/probes.md).
+
+## Annotations
+
+Now we have to link each object manifest to a phase. This is done by adding a `package-operator.run/phase` annotation to the object.
+We would now add a `package-operator.run/phase: crds` annotation to all CRD object manifests, and a
+`package-operator.run/phase: depoy` annotation to the operator deployment manifest.
+
+
 
 ## Package Image
 Package Operator receives these files via a non-runnable container image. The files just have to be contained in the
@@ -85,7 +101,7 @@ package
 ```
 
 #### Build the Image
-This package image can now be built using your container runtime cli of choice, for example:
+This package image can with whichever tool you use for building images, for example:
 ```shell
 podman build -t packageImage -f package.Containerfile .
 ```

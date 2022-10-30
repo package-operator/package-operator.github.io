@@ -57,7 +57,6 @@ The first step in packaging an application is to create a package manifest file.
 manifest file on the [Package Format page](/content/en/docs/concepts/package-format.md).
 For our application the package manifest file looks like:
 
-// TODO: talk about scope
 
 manifest.yaml
 ```yaml
@@ -88,15 +87,21 @@ spec:
 A short discussion about the different fields in `.spec`.
 ### Scopes
 Since the package contains a namespace object, which is cluster scoped, the only possible scope for the
-package is `Cluster`. You can read more about availability probes on the [Scopes page](/content/en/docs/concepts/scopes.md).
+package is `Cluster`. You can read more about scopes on the [Scopes page](/content/en/docs/concepts/scopes.md).
 
 ### Phases
 The namespace must be created before the deployment. The Package Manifest file has two phases defined,
-`namespace` and `deploy`, in that order.
+`namespace` and `deploy`, in that order. Read more about phases
+on the [Phases page](/content/en/docs/concepts/phases.md).
 
-The order of which the phases are listed in the PackageManifest file is preserved and respected. Now we have to link each
-object to a phase. This is done by adding a `package-operator.run/phase` annotation to the object. For example, our
-`namespace.yaml` file would now look like:
+
+### Availability Probes
+This is a pretty standard probe for deployment resources. You can read more about availability probes
+on the [Probes page](/content/en/docs/concepts/probes.md).
+
+## Annotations
+Now we have to link each object to a phase. This is done by adding a `package-operator.run/phase` annotation to the object.
+For example, our `namespace.yaml` file would now look like:
 ```yaml
 apiVersion: v1
 kind: Namespace
@@ -105,17 +110,11 @@ metadata:
   annotations:
     package-operator.run/phase: namespace
 ```
-Multiple objects can be assigned to each phase, but in the phase there is no guaranteed order. Read more about phases
-on the [Phases page](/content/en/docs/concepts/phases.md).
-
-### Availability Probes
-Not every `kind` you deploy needs a probe, however `availabilityProbes` is a required field meaning you
-need at least one probe. You can read more about availability probes on the [Probes page](/content/en/docs/concepts/probes.md).
 
 
 ## Package Image
 Package Operator receives these files via a non-runnable container image. The files just have to be contained in the
-`/package` directory in the image. That means, container file could be as simple as
+`/package` directory in the image. Therefore, the container file is very simple:
 
 package.Containerfile
 ```dockerfile
@@ -126,8 +125,8 @@ ADD . /package
 
 
 #### Build the Image
-This package image can now be built using your container runtime cli of choice, for example:
-// TODO: is continer runtime cli the right phrase
+This package image can with whichever tool you use for building images, for example:
+
 ```shell
 podman build -t packageImage -f package.Containerfile .
 ```

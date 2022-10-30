@@ -22,7 +22,7 @@ If one of these immutable fields is changed in an update, the webhook server wil
 
 ## Loading Package Images
 A package is a single artifact that contains all manifests, configuration, and metadata needed to run an
-application or operator. This single artifact takes the form of a non runnable container images. This
+application or operator. This single artifact takes the form of a non-runnable container image. This
 image is supplied to Package Operator in a `Package` or `ClusterPackage` object.
 
 When Package Operator reconciles a `Package` object, it needs to access the content of the package image.
