@@ -15,6 +15,5 @@ You will need the Kubernetes CLI, [kubectl](https://kubernetes.io/docs/tasks/too
 to deploy and interact with Package Operator and your packages.
 
 ## Container Runtime
-You will need a container runtime with CLI, such as [docker](https://docs.docker.com/get-docker/) or
-[podman](https://podman.io/getting-started/installation), to build your package images.
-TODO: is container runtime the right phrase?
+You will CLI to build container images, such as [docker](https://docs.docker.com/get-docker/) or
+[podman](https://podman.io/getting-started/installation).

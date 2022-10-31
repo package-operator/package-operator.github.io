@@ -6,7 +6,7 @@ images: []
 
 ## Objectives
 * Create a manifest.yaml file
-* Add annotation to Kubernetes object manifest files to specify phase
+* Add annotations to Kubernetes object manifest files to specify phase
 * Package all files in a Containerfile
 * Build the image
 
@@ -15,10 +15,11 @@ This guide assumes you have all the [required software](/docs/getting_started/re
 Kubernetes cluster with [Package Operator installed](/docs/getting_started/installation.md).
 
 ## Application
-// TODO: add service?
-The application is a simple nginx webserver deployment with. Let's also say you want to run your nginx deployment in
+
+The application is a simple nginx webserver deployment. The deployment should also be run in
 its own namespace, called nginx. The manifests for these two resources are as follows:
-namespace.yaml // TODO: stylize file names
+
+###### namespace.yaml
 ```yaml
 apiVersion: v1
 kind: Namespace
@@ -26,7 +27,7 @@ metadata:
   name: nginx
 ```
 
-deployment.yaml
+###### deployment.yaml
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -58,12 +59,12 @@ manifest file on the [Package Format page](/content/en/docs/concepts/package-for
 For our application the package manifest file looks like:
 
 
-manifest.yaml
+###### manifest.yaml
 ```yaml
 apiVersion: manifests.package-operator.run/v1alpha1
 kind: PackageManifest
 metadata:
-  name: test-stub
+  name: nginx
 spec:
   scopes:
   - Cluster
@@ -90,18 +91,20 @@ Since the package contains a namespace object, which is cluster scoped, the only
 package is `Cluster`. You can read more about scopes on the [Scopes page](/content/en/docs/concepts/scopes.md).
 
 ### Phases
-The namespace must be created before the deployment. The Package Manifest file has two phases defined,
+The namespace must be created before the deployment. Therefore, the Package Manifest file has two phases defined,
 `namespace` and `deploy`, in that order. Read more about phases
 on the [Phases page](/content/en/docs/concepts/phases.md).
 
 
 ### Availability Probes
-This is a pretty standard probe for deployment resources. You can read more about availability probes
+This is a standard probe for deployment resources. You can read more about availability probes
 on the [Probes page](/content/en/docs/concepts/probes.md).
 
 ## Annotations
 Now we have to link each object to a phase. This is done by adding a `package-operator.run/phase` annotation to the object.
 For example, our `namespace.yaml` file would now look like:
+
+###### namespace.yaml
 ```yaml
 apiVersion: v1
 kind: Namespace
@@ -113,10 +116,10 @@ metadata:
 
 
 ## Package Image
-Package Operator receives these files via a non-runnable container image. The files just have to be contained in the
+Package Operator receives these files via a non-runnable container image. The files have to be contained in the
 `/package` directory in the image. Therefore, the container file is very simple:
 
-package.Containerfile
+###### package.Containerfile
 ```dockerfile
 FROM scratch
 
@@ -125,7 +128,7 @@ ADD . /package
 
 
 #### Build the Image
-This package image can with whichever tool you use for building images, for example:
+This package image can be built with whichever tool you use for building images, for example:
 
 ```shell
 podman build -t packageImage -f package.Containerfile .
