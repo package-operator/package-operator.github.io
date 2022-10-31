@@ -19,7 +19,7 @@ CRDs, the CRDs have to be deployed before the operator deployment. This order of
 `phases` in the `manifest.yaml`
 
 ## Package Manifest
-The package manifest file is described in detail on the [Package Format page](docs/concepts/package-format). For
+The package manifest file is described in detail on the [Package Format page](/docs/concepts/package-format). For
 a simple operator the file would most likely look like this:
 
 ###### manifest.yaml
@@ -50,7 +50,7 @@ spec:
 A short discussion about the different fields in `.spec`.
 ### Scopes
 Since the package contains CRDs, which are cluster scoped, the only possible scope for the
-package is `Cluster`. You can read more about scopes on the [Scopes page](/content/en/docs/concepts/scopes).
+package is `Cluster`. You can read more about scopes on the [Scopes page](/docs/concepts/scopes).
 
 ### Phases
 The CRDs must be created before the deployment. Therefore, the Package Manifest file has two phases,
