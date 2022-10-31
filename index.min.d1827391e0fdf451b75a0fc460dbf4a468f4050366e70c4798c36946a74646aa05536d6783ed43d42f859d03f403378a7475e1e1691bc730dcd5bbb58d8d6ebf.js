@@ -79,17 +79,18 @@ kubectl # You will need the Kubernetes CLI, kubectl, to deploy and interact with
 Container Runtime # You will CLI to build container images, such as docker or podman.`,content:`Kubernetes Cluster # Package Operator need a Kubernetes cluster to be deployed on. If you don\u0026rsquo;t have a cluster but still want to play around with Package Operator, there are a few choices of tools to deploy a Kubernetes cluster locally, such as minikube and kind.
 kubectl # You will need the Kubernetes CLI, kubectl, to deploy and interact with Package Operator and your packages.
 Container Runtime # You will CLI to build container images, such as docker or podman.
-`}),e.add({id:10,href:"/docs/getting_started/installation/",title:"Installation",description:`All approaches can be used to install version v1.0.0-alpha.1 of Package Operator
-Via Mage # Clone the Package Operator repository. Make sure KUBECONFIG is defined and the config points at your Kubernetes cluster. From the root of the repository run VERSION=\u0026quot;v0.1.0-alpha.1\u0026quot; ./mage deploy.
-This will install the Package Operator Manager and the webhook server.
-Via Manifests # Package Operator has a single yaml file, install.yaml, which includes the manifests of all resources that make up Package Operator.`,content:`All approaches can be used to install version v1.0.0-alpha.1 of Package Operator
-Via Mage # Clone the Package Operator repository. Make sure KUBECONFIG is defined and the config points at your Kubernetes cluster. From the root of the repository run VERSION=\u0026quot;v0.1.0-alpha.1\u0026quot; ./mage deploy.
+`}),e.add({id:10,href:"/docs/getting_started/installation/",title:"Installation",description:`Package Operator can be installed in multiple different ways. Check the latest available release at Package Operator Releases.
+Via Package Operator # Package Operator is able to bootstrap and upgrade itself using a special self-bootstrap-job.
+Make sure KUBECONFIG is defined and the config points at your Kubernetes cluster. Then you can deploy Package Operator to bootstrap itself:
+kubectl create -f https://github.com/package-operator/package-operator/releases/download/latest/self-bootstrap-job.yaml This will not install the webhook server.
+Via Mage # Clone the Package Operator repository.`,content:`Package Operator can be installed in multiple different ways. Check the latest available release at Package Operator Releases.
+Via Package Operator # Package Operator is able to bootstrap and upgrade itself using a special self-bootstrap-job.
+Make sure KUBECONFIG is defined and the config points at your Kubernetes cluster. Then you can deploy Package Operator to bootstrap itself:
+kubectl create -f https://github.com/package-operator/package-operator/releases/download/latest/self-bootstrap-job.yaml This will not install the webhook server.
+Via Mage # Clone the Package Operator repository. Make sure KUBECONFIG is defined and the config points at your Kubernetes cluster. From the root of the repository run VERSION=\u0026quot;\u0026lt;Release to install\u0026gt;\u0026quot; ./mage deploy.
 This will install the Package Operator Manager and the webhook server.
 Via Manifests # Package Operator has a single yaml file, install.yaml, which includes the manifests of all resources that make up Package Operator. Therefore, Package Operator can be installed with the single command:
-https://raw.githubusercontent.com/package-operator/package-operator/v1.0.0-alpha.1/install.yaml This will not install the webhook server.
-Via Package Operator # Package Operator is able to bootstrap itself. The CRDs must be created first. Clone the Package Operator repository. Make sure KUBECONFIG is defined and the config points at your Kubernetes cluster. From the root of the repository run
-kubectl apply -f config/static-deployment/ Then you can deploy Package Operator to bootstrap itself:
-kubectl create -f https://github.com/package-operator/package-operator/releases/download/v1.0.0-alpha.1/current-self-bootstrap-job.yaml This will not install the webhook server.
+https://raw.githubusercontent.com/package-operator/package-operator/main/install.yaml This will not install the webhook server.
 `}),e.add({id:11,href:"/docs/concepts/probes/",title:"Probes",description:`Probes define how Package Operator judges the Availability of objects and is reporting status.
 Defining Availability will depend on the specific application that is deployed.
 In general, availability should reflect the health of the complete application bundle, so Package Operator can check whether it\u0026rsquo;s safe to roll over to a new revision.
