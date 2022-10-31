@@ -109,7 +109,7 @@ package
 │       │   cache-db.yaml
 │       │   cache-config.yaml
 │       │   ...
-│
+│   
 └───backend
     │   backend-deployment.yaml
     │   backend-config.yaml

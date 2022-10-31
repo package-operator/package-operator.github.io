@@ -42,13 +42,13 @@ direction LR
   Archived --> [*]
 ```
 
-- **Pending**
-  Intermediate state before the controller posted it's first update.
-- **Available**
+- **Pending**  
+  Intermediate state before the controller posted its first update.
+- **Available**  
   All availability probes are successful.
-- **Not Ready**
+- **Not Ready**  
   One or more availability probes are unsuccessful.
-- **Archived**
+- **Archived**  
   (Cluster)ObjectSet is shutdown and only acts as a revision tombstone for rollbacks.
 
 In addition to these major lifecycle states, (Cluster)ObjectSets may be **Paused**, stopping reconciliation, while still reporting status.
@@ -58,9 +58,9 @@ This can be useful for testing and debugging.
 
 Depending on the contents of the new revision, objects are eventually either:
 
-- **Patched**
+- **Patched**  
   If the object still part of the new revision, it will be handed over to the next revision.
-- **Deleted**
+- **Deleted**  
   If the object is not part of the new revision, it will be deleted when the old revision is archived.
 
 ### In-Place Updates
