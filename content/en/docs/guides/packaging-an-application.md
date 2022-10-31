@@ -11,8 +11,8 @@ images: []
 * Build the image
 
 ## Before you begin
-This guide assumes you have all the [required software](/docs/getting_started/requirements.md) installed and have a
-Kubernetes cluster with [Package Operator installed](/docs/getting_started/installation.md).
+This guide assumes you have all the [required software](/docs/getting_started/requirements) installed and have a
+Kubernetes cluster with [Package Operator installed](/docs/getting_started/installation).
 
 ## Application
 
@@ -55,7 +55,7 @@ spec:
 
 ## Package Manifest
 The first step in packaging an application is to create a package manifest file. Read more about the package
-manifest file on the [Package Format page](/content/en/docs/concepts/package-format.md).
+manifest file on the [Package Format page](docs/concepts/package-format).
 For our application the package manifest file looks like:
 
 
@@ -88,17 +88,17 @@ spec:
 A short discussion about the different fields in `.spec`.
 ### Scopes
 Since the package contains a namespace object, which is cluster scoped, the only possible scope for the
-package is `Cluster`. You can read more about scopes on the [Scopes page](/content/en/docs/concepts/scopes.md).
+package is `Cluster`. You can read more about scopes on the [Scopes page](/content/en/docs/concepts/scopes).
 
 ### Phases
 The namespace must be created before the deployment. Therefore, the Package Manifest file has two phases defined,
 `namespace` and `deploy`, in that order. Read more about phases
-on the [Phases page](/content/en/docs/concepts/phases.md).
+on the [Phases page](/content/en/docs/concepts/phases).
 
 
 ### Availability Probes
 This is a standard probe for deployment resources. You can read more about availability probes
-on the [Probes page](/content/en/docs/concepts/probes.md).
+on the [Probes page](/content/en/docs/concepts/probes).
 
 ## Annotations
 Now we have to link each object to a phase. This is done by adding a `package-operator.run/phase` annotation to the object.
@@ -135,4 +135,4 @@ podman build -t packageImage -f package.Containerfile .
 ```
 
 ## Next Steps
-See the [Installing Packages page](installing-packages.md) to see how to deploy packages using Package Operator.
+See the [Installing Packages page](/docs/guides/installing-packages) to see how to deploy packages using Package Operator.

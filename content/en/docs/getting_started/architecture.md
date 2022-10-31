@@ -12,7 +12,7 @@ reconciles `(Cluster)ObjectSetPhase`s with the `.spec.class` set to `default`.
 
 Package Operator Manager also contains functionality to copy its own binary and load packages, which is discussed
 in the [Loading Package Images Section](#loading-package-images), and functionality to allow Package Operator to
-bootstrap itself, which is discussed on the [Installation Page](/docs/getting_started/installation/#via_package_operator).
+bootstrap itself, which is discussed on the [Installation Page](/docs/getting_started/installation#via_package_operator).
 
 ## Webhooks
 There is a validation webhook server that can optionally be run with package operator. This webhook

@@ -10,8 +10,8 @@ images: []
 
 ## Before you begin
 This guide assumes there is already an image for the given package. If not, the
-[Packaging an Application](packaging-an-application.md) or the
-[Packaging an Operator](packaging-an-operator.md) guide show how to package an application or an operator
+[Packaging an Application](/docs/guides/packaging-an-application) or the
+[Packaging an Operator](/docs/guides/packaging-an-operator) guide show how to package an application or an operator
 respectfully.
 
 
@@ -21,7 +21,7 @@ The `(Cluster)Package` API is used to load package container images into a clust
 The `ClusterPackage` API is used for packages that have `Cluster` in their defined scopes and the
 `Package` API is used for packages that have `Namespaced` in their defined scopes.
 
-Read more about scopes on the [Scopes page](/content/en/docs/concepts/scopes.md).
+Read more about scopes on the [Scopes page](/docs/concepts/scopes).
 
 Let's say we want to deploy a package that only has `Cluster` scope. Since basically everything is already contained
 in the image, the package object manifest is quite simple.
@@ -39,8 +39,8 @@ spec:
 ```
 
 See the
-[Package api reference](/content/en/docs/getting_started/api-reference.md#package) and
-[ClusterPackage api reference](/content/en/docs/getting_started/api-reference.md#clusterpackage) for
+[Package api reference](/docs/getting_started/api-reference#package) and
+[ClusterPackage api reference](/docs/getting_started/api-reference#clusterpackage) for
 more information.
 
 
