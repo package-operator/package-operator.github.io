@@ -10,7 +10,7 @@ Via Package Operator # Package Operator is able to bootstrap and upgrade itself 
 Make sure KUBECONFIG is defined and the config points at your Kubernetes cluster. Then you can deploy Package Operator to bootstrap itself:
 kubectl create -f https://github.com/package-operator/package-operator/releases/latest/download/self-bootstrap-job.yaml This will not install the webhook server.
 Via Mage # Clone the Package Operator repository.</description></item><item><title>API Reference</title><link>https://package-operator.run/docs/getting_started/api-reference/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://package-operator.run/docs/getting_started/api-reference/</guid><description>The Package Operator APIs are an extension of the Kubernetes API using CustomResourceDefinitions. These new APIs can be interacted with like any other Kubernetes object using e.g. kubectl.
-APIs follows the same API versioning guidelines as the main Kubernetes project.
+APIs follow the same API versioning guidelines as the main Kubernetes project.
 Versioning principles. Taken from the Kubernetes API versioning documentation:
 Alpha
 The version names contain alpha (for example, v1alpha1). The software may contain bugs. Enabling a feature may expose bugs. A feature may be disabled by default.</description></item></channel></rss>
