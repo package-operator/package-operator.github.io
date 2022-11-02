@@ -41,7 +41,7 @@ The ClusterPackage API is used for packages that have Cluster in their defined s
 The ClusterPackage API is used for packages that have Cluster in their defined scopes and the Package API is used for packages that have Namespaced in their defined scopes.
 Read more about scopes on the Scopes page.
 Let\u0026rsquo;s say we want to deploy a package that only has Cluster scope. Since basically everything is already contained in the image, the package object manifest is quite simple.
-package.yaml # apiVersion: package-operator.run/v1alpha1 kind: ClusterPackage metadata: name: example namespace: default spec: image: packageImage See the Package api reference and ClusterPackage api reference for more information.
+package.yaml # apiVersion: package-operator.run/v1alpha1 kind: ClusterPackage metadata: name: example spec: image: packageImage See the Package api reference and ClusterPackage api reference for more information.
 Deploy Package Object # The package object manifest can now be deployed using kubectl:
 kubectl create -f package.yaml `}),e.add({id:6,href:"/docs/concepts/reconciliation/",title:"Object Reconciliation",description:`Package Operator is watching and if needed reconciling all objects under management.
 This page describes in detail how individual objects are updated.
