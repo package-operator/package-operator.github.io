@@ -14,8 +14,12 @@ direction LR
   rev1 --&gt; rev2
   rev2 --&gt; rev3
   rev3 --&gt; [*]
-</code></pre><p>Revisions are iterations and changes of a deployment over time. To support zero-downtime deployments, even if something goes wrong, Package Operator can manage multiple active revisions at the same time. This strategy is also often referred to as &ldquo;A/B deployment&rdquo; or &ldquo;canary deployment&rdquo;.</p><p>A revision is represented by the <code>ObjectSet</code>/<code>ClusterObjectSet</code> APIs.</p><p>While revision are ordered on a time axis, Package Operator makes no assumptions on the contents of each revisions.
-This means that Revision 3 could contain the same spec as Revision 1, rolling back changes introduced by Revision 2.</p><h2 id="revision-lifecycle">Revision Lifecycle <a href="#revision-lifecycle" class="anchor" aria-hidden="true">#</a></h2><pre><code class="language-mermaid">stateDiagram-v2
+</code></pre><p>Revisions are iterations and changes of a deployment over time. To support zero-downtime
+deployments, even if something goes wrong, Package Operator can manage multiple
+active revisions at the same time. This strategy is also often referred to as
+&ldquo;A/B deployment&rdquo; or &ldquo;canary deployment&rdquo;.</p><p>A revision is represented by the <code>ObjectSet</code>/<code>ClusterObjectSet</code> APIs.</p><p>While revision are ordered on a time axis, Package Operator makes no assumptions
+on the contents of each revisions. This means that Revision 3 could contain the
+same spec as Revision 1, rolling back changes introduced by Revision 2.</p><h2 id="revision-lifecycle">Revision Lifecycle <a href="#revision-lifecycle" class="anchor" aria-hidden="true">#</a></h2><pre><code class="language-mermaid">stateDiagram-v2
 direction LR
   state &quot;Not Ready&quot; as not_ready
   [*] --&gt; Pending
@@ -26,8 +30,11 @@ direction LR
   Available --&gt; Archived
   not_ready --&gt; Archived
   Archived --&gt; [*]
-</code></pre><ul><li><strong>Pending</strong><br>Intermediate state before the controller posted its first update.</li><li><strong>Available</strong><br>All availability probes are successful.</li><li><strong>Not Ready</strong><br>One or more availability probes are unsuccessful.</li><li><strong>Archived</strong><br>(Cluster)ObjectSet is shutdown and only acts as a revision tombstone for rollbacks.</li></ul><p>In addition to these major lifecycle states, (Cluster)ObjectSets may be <strong>Paused</strong>, stopping reconciliation, while still reporting status.
-This can be useful for testing and debugging.</p><h2 id="rollout-handling">Rollout Handling <a href="#rollout-handling" class="anchor" aria-hidden="true">#</a></h2><p>Depending on the contents of the new revision, objects are eventually either:</p><ul><li><strong>Patched</strong><br>If the object still part of the new revision, it will be handed over to the next revision.</li><li><strong>Deleted</strong><br>If the object is not part of the new revision, it will be deleted when the old revision is archived.</li></ul><h3 id="in-place-updates">In-Place Updates <a href="#in-place-updates" class="anchor" aria-hidden="true">#</a></h3><pre><code class="language-mermaid">flowchart LR
+</code></pre><ul><li><strong>Pending</strong><br>Intermediate state before the controller posted its first update.</li><li><strong>Available</strong><br>All availability probes are successful.</li><li><strong>Not Ready</strong><br>One or more availability probes are unsuccessful.</li><li><strong>Archived</strong><br>(Cluster)ObjectSet is shutdown and only acts as a revision tombstone for rollbacks.</li></ul><p>In addition to these major lifecycle states, (Cluster)ObjectSets may be <strong>Paused</strong>,
+stopping reconciliation, while still reporting status.
+This can be useful for testing and debugging.</p><h2 id="rollout-handling">Rollout Handling <a href="#rollout-handling" class="anchor" aria-hidden="true">#</a></h2><p>Depending on the contents of the new revision, objects are eventually either:</p><ul><li><strong>Patched</strong><br>If the object still part of the new revision, it will be handed over to the next
+revision.</li><li><strong>Deleted</strong><br>If the object is not part of the new revision, it will be deleted when the old
+revision is archived.</li></ul><h3 id="in-place-updates">In-Place Updates <a href="#in-place-updates" class="anchor" aria-hidden="true">#</a></h3><pre><code class="language-mermaid">flowchart LR
   subgraph Revision 1
     deploy1[&quot;Deployment &lt;b&gt;my-deployment&lt;/b&gt;&lt;br&gt;image: my-image:rev1&quot;]
   end
@@ -35,8 +42,11 @@ This can be useful for testing and debugging.</p><h2 id="rollout-handling">Rollo
     deploy2[&quot;Deployment &lt;b&gt;my-deployment&lt;/b&gt;&lt;br&gt;image: my-image:rev2&quot;]
   end
   deploy1--patched object--&gt;deploy2
-</code></pre><p>&ldquo;In-Place&rdquo; updates happen when a new revision contains an object with the same name and type as the previous revision.
-Objects are handed over to a new revision and patched as needed.</p><p>When all objects have been handed over to a new revision, the previous revision is automatically <strong>archived</strong>.</p><div class="alert alert-doks d-flex" role="alert"><div class="flex-shrink-1 alert-icon"></div><div class="w-100">Updating in-place may not provide any safety net.<br>If the Update fails, your deployment may face downtime.</div></div><h3 id="ab-updates">A/B Updates <a href="#ab-updates" class="anchor" aria-hidden="true">#</a></h3><pre><code class="language-mermaid">flowchart LR
+</code></pre><p>&ldquo;In-Place&rdquo; updates happen when a new revision contains an object with the same name
+and type as the previous revision. Objects are handed over to a new revision and
+patched as needed.</p><p>When all objects have been handed over to a new revision, the previous revision
+is automatically <strong>archived</strong>.</p><div class="alert alert-doks d-flex" role="alert"><div class="flex-shrink-1 alert-icon"></div><div class="w-100">Updating in-place may not provide any safety net.<br>If the Update
+fails, your deployment may face downtime.</div></div><h3 id="ab-updates">A/B Updates <a href="#ab-updates" class="anchor" aria-hidden="true">#</a></h3><pre><code class="language-mermaid">flowchart LR
   subgraph Revision 1
     deploy1[&quot;Deployment &lt;b&gt;my-deployment-v1&lt;/b&gt;&lt;br&gt;image: my-image:rev1&quot;]
   end
@@ -44,8 +54,10 @@ Objects are handed over to a new revision and patched as needed.</p><p>When all 
     deploy2[&quot;Deployment &lt;b&gt;my-deployment-v2&lt;/b&gt;&lt;br&gt;image: my-image:rev2&quot;]
   end
   deploy1-. indirect successor .-&gt;deploy2
-</code></pre><p>A/B updates happen when a new revision does not contain an object with the same name and type as a previous revision.
-A new object is created in the new revision without affecting the old object.</p><p>The old revision is only archived when the new revision has completely finished its rollout and is &ldquo;Available&rdquo;.</p><h3 id="intermediate-failed-revisions">Intermediate (Failed) Revisions <a href="#intermediate-failed-revisions" class="anchor" aria-hidden="true">#</a></h3><pre><code class="language-mermaid">flowchart LR
+</code></pre><p>A/B updates happen when a new revision does not contain an object with the same
+name and type as a previous revision. A new object is created in the new revision
+without affecting the old object.</p><p>The old revision is only archived when the new revision has completely finished
+its rollout and is &ldquo;Available&rdquo;.</p><h3 id="intermediate-failed-revisions">Intermediate (Failed) Revisions <a href="#intermediate-failed-revisions" class="anchor" aria-hidden="true">#</a></h3><pre><code class="language-mermaid">flowchart LR
   subgraph rev1[Revision 1]
     cm1[&quot;ConfigMap &lt;b&gt;my-config&lt;/b&gt;&lt;br&gt;data: {key: value-v1}&quot;]
     deploy1[&quot;Deployment &lt;b&gt;my-deployment-v1&lt;/b&gt;&lt;br&gt;image: my-image:rev1&quot;]
@@ -63,7 +75,14 @@ A new object is created in the new revision without affecting the old object.</p
   deploy2--&gt;deploy3
   cm1-.-&gt;cm2
   cm2-.-&gt;cm3
-</code></pre><p>Under normal circumstances at max 2 Revisions can be active during rollout. An old and a new revision.</p><p>If a revision fails to become available due to e.g. misconfiguration and a new revision supersedes it, multiple intermediate revisions might be active until the latest revision becomes available.</p><p>Intermediate revisions will only be cleaned up if:</p><ul><li>Latest revision becomes available</li><li>Revision is not reconciling any objects anymore</li><li>Latest revision is not containing any object still actively reconciled by an intermediate</li></ul><div class="alert alert-doks d-flex" role="alert"><div class="flex-shrink-1 alert-icon"></div><div class="w-100">This behavior is necessary, so Package Operator can ensure the safe handover of objects between revisions.</div></div><p>In the example above, the ConfigMap &ldquo;my-config&rdquo; is handed over from revision 1 to revision 2 and in the end to revision 3.</p><p>As soon as revision 3 takes ownership of the ConfigMap, the failed intermediate revision 2 can be archived, as &ldquo;my-deployment-v2&rdquo; no longer exists in revision 3 and is thus safe to delete.</p><h2 id="internals">Internals <a href="#internals" class="anchor" aria-hidden="true">#</a></h2><h3 id="objectset-to-objectset-handover">ObjectSet to ObjectSet Handover <a href="#objectset-to-objectset-handover" class="anchor" aria-hidden="true">#</a></h3><pre><code class="language-yaml">apiVersion: package-operator.run/v1alpha1
+</code></pre><p>Under normal circumstances at max 2 Revisions can be active during rollout. An old
+and a new revision.</p><p>If a revision fails to become available due to e.g. misconfiguration and a new revision
+supersedes it, multiple intermediate revisions might be active until the latest
+revision becomes available.</p><p>Intermediate revisions will only be cleaned up if:</p><ul><li>Latest revision becomes available</li><li>Revision is not reconciling any objects anymore</li><li>Latest revision is not containing any object still actively reconciled by an intermediate</li></ul><div class="alert alert-doks d-flex" role="alert"><div class="flex-shrink-1 alert-icon"></div><div class="w-100">This behavior is necessary, so Package Operator can ensure the
+safe handover of objects between revisions.</div></div><p>In the example above, the ConfigMap &ldquo;my-config&rdquo; is handed over from revision 1 to
+revision 2 and in the end to revision 3.</p><p>As soon as revision 3 takes ownership of the ConfigMap, the failed intermediate
+revision 2 can be archived, as &ldquo;my-deployment-v2&rdquo; no longer exists in revision 3
+and is thus safe to delete.</p><h2 id="internals">Internals <a href="#internals" class="anchor" aria-hidden="true">#</a></h2><h3 id="objectset-to-objectset-handover">ObjectSet to ObjectSet Handover <a href="#objectset-to-objectset-handover" class="anchor" aria-hidden="true">#</a></h3><pre><code class="language-yaml">apiVersion: package-operator.run/v1alpha1
 kind: ObjectSet
 metadata:
   name: v1
@@ -137,4 +156,4 @@ autonumber
 <script src="/js/highlight.min.ae07439cb69b06357b5054c0e72dcefcc5eb964dff6ef0c698815e24cf09afb9d0fe52e4ffbd0c8ba59962e9a224bfd6ebfdf79d8acb6ab9999e9dac623ddb25.js" integrity="sha512-rgdDnLabBjV7UFTA5y3O/MXrlk3/bvDGmIFeJM8Jr7nQ/lLk/70Mi6WZYumiJL/W6/33nYrLarmZnp2sYj3bJQ==" crossorigin="anonymous" defer></script>
 <script src="/main.min.68af13f2313fe51906dd11c1d5e0844190582d89e6ca5907f1281b7bf7c2a3f1dc9e71a233a1ef3714b5da77afca4c4eaa8491b8d3bd2bbcb265a38812c7bfde.js" integrity="sha512-aK8T8jE/5RkG3RHB1eCEQZBYLYnmylkH8Sgbe/fCo/HcnnGiM6HvNxS12nevykxOqoSRuNO9K7yyZaOIEse/3g==" crossorigin="anonymous" defer></script>
 <script src="/js/mermaid.min.a220cc27c2b95e3006e4cb2a9773406e360ec7ad5a0bab7d6c87fbf860060d74927b170e0f0bb49558dc317b92cbb7cb366fec869f962587eafefa76b3fe0ea1.js" integrity="sha512-oiDMJ8K5XjAG5Msql3NAbjYOx61aC6t9bIf7+GAGDXSSexcODwu0lVjcMXuSy7fLNm/shp+WJYfq/vp2s/4OoQ==" crossorigin="anonymous" defer></script>
-<script src="https://package-operator.run/index.min.0088efbb2377aeab1168899258cd8d9030b9ff1193fa8c4484a9b6d18f0836ac48e882281b7c217ee5563c0e85659281e8cd5ad9c76f502fcfcaf75dcbd1aa20.js" integrity="sha512-AIjvuyN3rqsRaImSWM2NkDC5/xGT+oxEhKm20Y8INqxI6IIoG3whfuVWPA6FZZKB6M1a2cdvUC/Pyvddy9GqIA==" crossorigin="anonymous" defer></script></body></html>
+<script src="https://package-operator.run/index.min.04132f7ee5ff8885cf81f18cf44c511807482a010b1c933e4355c380e86c2407485b0b267ce39eef9c0a58153f2f12fa4e6e040c6483d651cee8eeb7dbeabecd.js" integrity="sha512-BBMvfuX/iIXPgfGM9ExRGAdIKgELHJM+Q1XDgOhsJAdIWwsmfOOe75wKWBU/LxL6Tm4EDGSD1lHO6O632+q+zQ==" crossorigin="anonymous" defer></script></body></html>
