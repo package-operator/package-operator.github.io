@@ -64,13 +64,14 @@ $ kubectl package build -t &lt;your-image-url-goes-here&gt; --push 1_application
 </code></pre><div class="alert alert-doks d-flex" role="alert"><div class="flex-shrink-1 alert-icon"></div><div class="w-100">If you load the image to a local registry (e.g. with
 'minikube image load' or 'kind load'), specify a tag different than 'latest'
 (e.g. 'test' or 'v1'), otherwise Package Operator won't be able to load it.</div></div><h3 id="deploy">Deploy <a href="#deploy" class="anchor" aria-hidden="true">#</a></h3><p>Now that you have build your first Package Operator package, we can deploy it!<br>You will find the <code>Package</code>-object template in the examples checkout under
-1_applications/package.yaml.<br>Don&rsquo;t forget to change the image url so it corresponds to the one used when building
-the package.</p><pre><code class="language-yaml">apiVersion: package-operator.run/v1alpha1
+1_applications/package.yaml. Don&rsquo;t forget to change the package url so it<br>corresponds to the one used when building the package.</p><p>If the package specified a configuration set, its values are to be specified in<br>a config section within the spec. If a config entry has a default specified in<br>the package manifest it may be overridden here. If the package requires values<br>that are not defaulted and missing here, the package installation will fail.</p><pre><code class="language-yaml">apiVersion: package-operator.run/v1alpha1
 kind: Package
 metadata:
   name: my-nginx
 spec:
-  image: &lt;your-image-url-goes-here&gt;
+  image: &lt;your-package-url-goes-here&gt;
+  config:
+    nginxImage: &quot;nginx:1.23.3&quot;
 </code></pre><pre><code class="language-sh">$ kubectl create -f 1_applications/package.yaml
 package.package-operator.run/my-nginx created
 
@@ -85,11 +86,8 @@ $ kubectl get po
 NAME                               READY   STATUS    RESTARTS   AGE
 nginx-deployment-cd55c47f5-szvh7   1/1     Running   0          79s
 </code></pre><h2 id="2-templates">2. Templates <a href="#2-templates" class="anchor" aria-hidden="true">#</a></h2><p><em>Please refer to the files in <code>/1_applications/2_templates</code> for this step.</em></p><p>Next we want to make sure that the package can be installed multiple times into
-the same namespace. To accomplish this, we have to make the package more dynamic!</p><h3 id="go-templates">Go Templates <a href="#go-templates" class="anchor" aria-hidden="true">#</a></h3><p>By renaming <code>deployment.yaml</code> into <code>deployment.yaml.gotmpl</code>, we can enable <a href="https://pkg.go.dev/text/template">Go template</a>
-support. Files suffixed with <code>.gotmpl</code> will be processed by the Go template engine
-before the YAML manifests are parsed.</p><p><a href="/docs/getting_started/api-reference/#templatecontext">TemplateContext</a> is documented
-as part of the API.</p><pre><code class="language-yaml">app.kubernetes.io/instance: &quot;{{.Package.Name}}&quot;
-</code></pre><h3 id="testing-templates">Testing Templates <a href="#testing-templates" class="anchor" aria-hidden="true">#</a></h3><p>Using a template engine with yaml files can quickly lead to unexpected results.<br>To aid with testing, Package Operator includes a simple package testing framework.</p><p>Template tests may be configured as part of the <code>PackageManifest</code>, by specifying
+the same namespace. To accomplish this, we have to make the package more dynamic!</p><h3 id="go-templates">Go Templates <a href="#go-templates" class="anchor" aria-hidden="true">#</a></h3><p>By renaming <code>deployment.yaml</code> into <code>deployment.yaml.gotmpl</code>, we can enable<br><a href="https://pkg.go.dev/text/template">Go template</a> support. Files suffixed with<br><code>.gotmpl</code> will be processed by the Go template engine before the YAML manifests<br>are parsed.</p><p><a href="/docs/getting_started/api-reference/#templatecontext">TemplateContext</a> is<br>documented as part of the API. It always contains information like package<br>metadata that can be used to reduce reduncancies.</p><pre><code class="language-yaml">app.kubernetes.io/instance: &quot;{{.package.metadata.name}}&quot;
+</code></pre><p>Additionally, a config section may be added to packages, which requires said<br>config to be specified within the package manifest as<br><a href="https://spec.openapis.org/oas/v3.1.0">OpenAPI spec</a>. It is recommended require<br>value that are always needed for package deployment and set defaults if appropriate.</p><h3 id="testing-templates">Testing Templates <a href="#testing-templates" class="anchor" aria-hidden="true">#</a></h3><p>Using a template engine with yaml files can quickly lead to unexpected results.<br>To aid with testing, Package Operator includes a simple package testing framework.</p><p>Template tests may be configured as part of the <code>PackageManifest</code>, by specifying
 the TemplateContext data to test the template process with.</p><p>For each template test, Package Operator will auto-generate fixtures into a <code>.test-fixtures</code>
 folder when running <code>kubectl package validate</code> or <code>build</code> and compare the output
 of successive template operations against these fixtures.</p><pre><code class="language-yaml">test:
@@ -102,7 +100,7 @@ of successive template operations against these fixtures.</p><pre><code class="l
           namespace: test-ns
 </code></pre><hr><p>Now make a change to the template and validate the package again:</p><pre><code class="language-yaml">#...
 metadata:
-  name: &quot;{{.Package.Name}}-deploy&quot;
+  name: &quot;{{.package.metadata.Name}}-deploy&quot;
 #...
 </code></pre><pre><code class="language-sh">$ kubectl package validate 1_applications/2_templates
 Error: Package validation errors:
@@ -141,4 +139,4 @@ other-nginx   1/1     1            1           117s
 </code></pre><div class="page-footer-meta d-flex flex-column flex-md-row justify-content-between"></div><div class="docs-navigation d-flex justify-content-between"><a class="ms-auto" href="/docs/guides/packaging-an-operator/"><div class="card my-1"><div class="card-body py-2">Packaging an Operator &rarr;</div></div></a></div></main></div></div></div><footer class="footer text-muted"><div class="container-xxl"><div class="row"><div class="col-lg-8 order-last order-lg-first"><ul class="list-inline"><li class="list-inline-item">Powered by <a class="text-muted" href="https://gohugo.io/">Hugo</a> and <a class="text-muted" href="https://getdoks.org/">Doks</a></li></ul></div><div class="col-lg-8 order-first order-lg-last text-lg-end"><ul class="list-inline"></ul></div></div></div></footer><script src="/js/bootstrap.min.44fc78ffe68ed681865871fdec9750ca44c6febe429bf0779d114896edde0f92b92891b983ef933484a02a2c7ceb3d1fa6392c39179350ad04197a153a2db970.js" integrity="sha512-RPx4/+aO1oGGWHH97JdQykTG/r5Cm/B3nRFIlu3eD5K5KJG5g++TNISgKix86z0fpjksOReTUK0EGXoVOi25cA==" crossorigin="anonymous" defer></script>
 <script src="/js/highlight.min.ae07439cb69b06357b5054c0e72dcefcc5eb964dff6ef0c698815e24cf09afb9d0fe52e4ffbd0c8ba59962e9a224bfd6ebfdf79d8acb6ab9999e9dac623ddb25.js" integrity="sha512-rgdDnLabBjV7UFTA5y3O/MXrlk3/bvDGmIFeJM8Jr7nQ/lLk/70Mi6WZYumiJL/W6/33nYrLarmZnp2sYj3bJQ==" crossorigin="anonymous" defer></script>
 <script src="/main.min.68af13f2313fe51906dd11c1d5e0844190582d89e6ca5907f1281b7bf7c2a3f1dc9e71a233a1ef3714b5da77afca4c4eaa8491b8d3bd2bbcb265a38812c7bfde.js" integrity="sha512-aK8T8jE/5RkG3RHB1eCEQZBYLYnmylkH8Sgbe/fCo/HcnnGiM6HvNxS12nevykxOqoSRuNO9K7yyZaOIEse/3g==" crossorigin="anonymous" defer></script>
-<script src="https://package-operator.run/index.min.04132f7ee5ff8885cf81f18cf44c511807482a010b1c933e4355c380e86c2407485b0b267ce39eef9c0a58153f2f12fa4e6e040c6483d651cee8eeb7dbeabecd.js" integrity="sha512-BBMvfuX/iIXPgfGM9ExRGAdIKgELHJM+Q1XDgOhsJAdIWwsmfOOe75wKWBU/LxL6Tm4EDGSD1lHO6O632+q+zQ==" crossorigin="anonymous" defer></script></body></html>
+<script src="https://package-operator.run/index.min.c805933b5d55e73aecb6da8d8031e97f7fdb6b3f3452a841577662012a52b383a3ea11d8024cc9cb60ce2ced95cbafc30d8cbf75e92cdc56bd971e224e45547f.js" integrity="sha512-yAWTO11V5zrsttqNgDHpf3/baz80UqhBV3ZiASpSs4Oj6hHYAkzJy2DOLO2Vy6/DDYy/deks3Fa9lx4iTkVUfw==" crossorigin="anonymous" defer></script></body></html>
