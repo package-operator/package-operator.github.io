@@ -46,7 +46,9 @@ Next we want to make sure that the package can be installed multiple times into 
 Go Templates # By renaming deployment.yaml into deployment.yaml.gotmpl, we can enable Go template support. Files suffixed with .gotmpl will be processed by the Go template engine before the YAML manifests are parsed.
 TemplateContext is documented as part of the API. It always contains information like package metadata that can be used to reduce reduncancies.
 app.kubernetes.io/instance: \u0026quot;{{.package.metadata.name}}\u0026quot; Additionally, a config section may be added to packages, which requires said config to be specified within the package manifest as OpenAPI spec. It is recommended require value that are always needed for package deployment and set defaults if appropriate.
-Testing Templates # Using a template engine with yaml files can quickly lead to unexpected results.
+To inspect the parsed hierarchy of your package when using a config section you must provide a configuration file with the required values:
+nginxImage: \u0026quot;nginx:1.23.3\u0026quot; kubectl package tree 1_applications/2_templates/ --config-path config.yaml Alternatively the config section of a named test template within the manifest can be used:
+kubectl package tree 1_applications/2_templates/ --config-testcase namespace-scope Testing Templates # Using a template engine with yaml files can quickly lead to unexpected results.
 To aid with testing, Package Operator includes a simple package testing framework.
 Template tests may be configured as part of the PackageManifest, by specifying the TemplateContext data to test the template process with.
 For each template test, Package Operator will auto-generate fixtures into a .test-fixtures folder when running kubectl package validate or build and compare the output of successive template operations against these fixtures.
