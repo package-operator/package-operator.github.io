@@ -186,50 +186,53 @@ Alpha
 The version names contain alpha (for example, v1alpha1). The software may contain bugs. Enabling a feature may expose bugs. A feature may be disabled by default. The support for a feature may be dropped at any time without notice. The API may change in incompatible ways in a later software release without notice. The software is recommended for use only in short-lived testing clusters, due to increased risk of bugs and lack of long-term support. Beta
 The version names contain beta (for example, v2beta3). The software is well tested. Enabling a feature is considered safe. Features are enabled by default. The support for a feature will not be dropped, though the details may change. The schema and/or semantics of objects may change in incompatible ways in a subsequent beta or stable release. When this happens, migration instructions are provided. Schema changes may require deleting, editing, and re-creating API objects. The editing process may not be straightforward. The migration may require downtime for applications that rely on the feature. The software is not recommended for production uses. Subsequent releases may introduce incompatible changes. If you have multiple clusters which can be upgraded independently, you may be able to relax this restriction. Stable
 The version name is vX where X is an integer. The stable versions of features appear in released software for many subsequent versions. Group versions # package-operator.run/v1alpha1\\ manifests.package-operator.run/v1alpha1 package-operator.run/v1alpha1 # The package v1alpha1 contains API Schema definitions for the v1alpha1 version of the core Package Operator API group, containing basic building blocks that other auxiliary APIs can build on top of.
-ClusterObjectDeployment ClusterObjectSet ClusterObjectSetPhase ClusterObjectSlice ClusterPackage ObjectDeployment ObjectSet ObjectSetPhase ObjectSlice Package ClusterObjectDeployment # ClusterObjectDeployment is the Schema for the ClusterObjectDeployments API
+ClusterObjectDeployment ClusterObjectSet ClusterObjectSetPhase ClusterObjectSlice ClusterObjectTemplate ClusterPackage ObjectDeployment ObjectSet ObjectSetPhase ObjectSlice ObjectTemplate Package ClusterObjectDeployment # ClusterObjectDeployment is the Schema for the ClusterObjectDeployments API
 Example
-apiVersion: package-operator.run/v1alpha1 kind: ClusterObjectDeployment metadata: name: example spec: revisionHistoryLimit: 10 selector: metav1.LabelSelector template: metadata: metav1.ObjectMeta spec: availabilityProbes: - probes: - condition: status: \u0026quot;True\u0026quot; type: Available fieldsEqual: fieldA: .spec.fieldA fieldB: .status.fieldB selector: kind: group: apps kind: Deployment selector: matchLabels: app.kubernetes.io/name: example-operator phases: - class: ipsum name: lorem objects: - object: apiVersion: apps/v1 kind: Deployment metadata: name: example-deployment slices: - dolor status: phase:Pending: null Field Description metadata metav1.ObjectMeta spec ClusterObjectDeploymentSpec ClusterObjectDeploymentSpec defines the desired state of a ClusterObjectDeployment. status ClusterObjectDeploymentStatus ClusterObjectDeploymentStatus defines the observed state of a ClusterObjectDeployment. ClusterObjectSet # ClusterObjectSet reconciles a collection of objects through ordered phases and aggregates their status.
+apiVersion: package-operator.run/v1alpha1 kind: ClusterObjectDeployment metadata: name: example spec: revisionHistoryLimit: 10 selector: metav1.LabelSelector template: metadata: metav1.ObjectMeta spec: availabilityProbes: - probes: - condition: status: \u0026quot;True\u0026quot; type: Available fieldsEqual: fieldA: .spec.fieldA fieldB: .status.fieldB selector: kind: group: apps kind: Deployment selector: matchLabels: app.kubernetes.io/name: example-operator phases: - class: ipsum name: lorem objects: - conditionMappings: - destinationType: sit sourceType: dolor object: apiVersion: apps/v1 kind: Deployment metadata: name: example-deployment slices: - amet status: phase:Pending: null Field Description metadata metav1.ObjectMeta spec ClusterObjectDeploymentSpec ClusterObjectDeploymentSpec defines the desired state of a ClusterObjectDeployment. status ClusterObjectDeploymentStatus ClusterObjectDeploymentStatus defines the observed state of a ClusterObjectDeployment. ClusterObjectSet # ClusterObjectSet reconciles a collection of objects through ordered phases and aggregates their status.
 ClusterObjectSets behave similarly to Kubernetes ReplicaSets, by managing a collection of objects and being itself mostly immutable. This object type is able to suspend/pause reconciliation of specific objects to facilitate the transition between revisions.
 Archived ClusterObjectSets may stay on the cluster, to store information about previous revisions.
 A Namespace-scoped version of this API is available as ObjectSet.
 Example
-apiVersion: package-operator.run/v1alpha1 kind: ClusterObjectSet metadata: name: example spec: availabilityProbes: - probes: - condition: status: \u0026quot;True\u0026quot; type: Available fieldsEqual: fieldA: .spec.fieldA fieldB: .status.fieldB selector: kind: group: apps kind: Deployment selector: matchLabels: app.kubernetes.io/name: example-operator lifecycleState: Active phases: - class: amet name: sit objects: - object: apiVersion: apps/v1 kind: Deployment metadata: name: example-deployment slices: - consetetur previous: - name: previous-revision status: phase: Pending Field Description metadata metav1.ObjectMeta spec ClusterObjectSetSpec ClusterObjectSetSpec defines the desired state of a ClusterObjectSet. status ClusterObjectSetStatus ClusterObjectSetStatus defines the observed state of a ClusterObjectSet. ClusterObjectSetPhase # ClusterObjectSetPhase is an internal API, allowing a ClusterObjectSet to delegate a single phase to another custom controller. ClusterObjectSets will create subordinate ClusterObjectSetPhases when .class is set within the phase specification.
+apiVersion: package-operator.run/v1alpha1 kind: ClusterObjectSet metadata: name: example spec: availabilityProbes: - probes: - condition: status: \u0026quot;True\u0026quot; type: Available fieldsEqual: fieldA: .spec.fieldA fieldB: .status.fieldB selector: kind: group: apps kind: Deployment selector: matchLabels: app.kubernetes.io/name: example-operator lifecycleState: Active phases: - class: sadipscing name: consetetur objects: - conditionMappings: - destinationType: sed sourceType: elitr object: apiVersion: apps/v1 kind: Deployment metadata: name: example-deployment slices: - diam previous: - name: previous-revision status: phase: Pending Field Description metadata metav1.ObjectMeta spec ClusterObjectSetSpec ClusterObjectSetSpec defines the desired state of a ClusterObjectSet. status ClusterObjectSetStatus ClusterObjectSetStatus defines the observed state of a ClusterObjectSet. ClusterObjectSetPhase # ClusterObjectSetPhase is an internal API, allowing a ClusterObjectSet to delegate a single phase to another custom controller. ClusterObjectSets will create subordinate ClusterObjectSetPhases when .class is set within the phase specification.
 Example
-apiVersion: package-operator.run/v1alpha1 kind: ClusterObjectSetPhase metadata: name: example spec: availabilityProbes: - probes: - condition: status: \u0026quot;True\u0026quot; type: Available fieldsEqual: fieldA: .spec.fieldA fieldB: .status.fieldB selector: kind: group: apps kind: Deployment selector: matchLabels: app.kubernetes.io/name: example-operator objects: - object: apiVersion: apps/v1 kind: Deployment metadata: name: example-deployment paused: \u0026quot;true\u0026quot; previous: - name: previous-revision revision: 42 status: conditions: - status: \u0026quot;True\u0026quot; type: Available controllerOf: - group: elitr kind: sadipscing name: sed namespace: diam Field Description metadata metav1.ObjectMeta spec ClusterObjectSetPhaseSpec ClusterObjectSetPhaseSpec defines the desired state of a ClusterObjectSetPhase. status ClusterObjectSetPhaseStatus ClusterObjectSetPhaseStatus defines the observed state of a ClusterObjectSetPhase. ClusterObjectSlice # ClusterObjectSlices are referenced by ObjectSets or ObjectDeployments and contain objects to limit the size of ObjectSet and ObjectDeployments when big packages are installed. This is necessary to work around the etcd object size limit of ~1.5MiB and to reduce load on the kube-apiserver.
+apiVersion: package-operator.run/v1alpha1 kind: ClusterObjectSetPhase metadata: name: example spec: availabilityProbes: - probes: - condition: status: \u0026quot;True\u0026quot; type: Available fieldsEqual: fieldA: .spec.fieldA fieldB: .status.fieldB selector: kind: group: apps kind: Deployment selector: matchLabels: app.kubernetes.io/name: example-operator objects: - conditionMappings: - destinationType: eirmod sourceType: nonumy object: apiVersion: apps/v1 kind: Deployment metadata: name: example-deployment paused: \u0026quot;true\u0026quot; previous: - name: previous-revision revision: 42 status: conditions: - status: \u0026quot;True\u0026quot; type: Available controllerOf: - group: lorem kind: tempor name: ipsum namespace: dolor Field Description metadata metav1.ObjectMeta spec ClusterObjectSetPhaseSpec ClusterObjectSetPhaseSpec defines the desired state of a ClusterObjectSetPhase. status ClusterObjectSetPhaseStatus ClusterObjectSetPhaseStatus defines the observed state of a ClusterObjectSetPhase. ClusterObjectSlice # ClusterObjectSlices are referenced by ObjectSets or ObjectDeployments and contain objects to limit the size of ObjectSet and ObjectDeployments when big packages are installed. This is necessary to work around the etcd object size limit of ~1.5MiB and to reduce load on the kube-apiserver.
 Example
-apiVersion: package-operator.run/v1alpha1 kind: ClusterObjectSlice metadata: name: example objects: - object: apiVersion: apps/v1 kind: Deployment metadata: name: example-deployment Field Description metadata metav1.ObjectMeta objects required
-[]ObjectSetObject ClusterPackage # Example
-apiVersion: package-operator.run/v1alpha1 kind: ClusterPackage metadata: name: example spec: image: nonumy status: phase: Pending Field Description metadata metav1.ObjectMeta spec PackageSpec Package specification. status PackageStatus PackageStatus defines the observed state of a Package. ObjectDeployment # ObjectDeployment is the Schema for the ObjectDeployments API
+apiVersion: package-operator.run/v1alpha1 kind: ClusterObjectSlice metadata: name: example objects: - conditionMappings: - destinationType: amet sourceType: sit object: apiVersion: apps/v1 kind: Deployment metadata: name: example-deployment Field Description metadata metav1.ObjectMeta objects required
+[]ObjectSetObject ClusterObjectTemplate # ClusterObjectTemplate contain a go template of a Kubernetes manifest. The manifest is then templated with the sources provided in the .Spec.Sources. The sources can come from objects from any namespace or cluster scoped objects.
 Example
-apiVersion: package-operator.run/v1alpha1 kind: ObjectDeployment metadata: name: example namespace: default spec: revisionHistoryLimit: 10 selector: metav1.LabelSelector template: metadata: metav1.ObjectMeta spec: availabilityProbes: - probes: - condition: status: \u0026quot;True\u0026quot; type: Available fieldsEqual: fieldA: .spec.fieldA fieldB: .status.fieldB selector: kind: group: apps kind: Deployment selector: matchLabels: app.kubernetes.io/name: example-operator phases: - class: tempor name: eirmod objects: - object: apiVersion: apps/v1 kind: Deployment metadata: name: example-deployment slices: - lorem status: phase:Pending: null Field Description metadata metav1.ObjectMeta spec ObjectDeploymentSpec ObjectDeploymentSpec defines the desired state of a ObjectDeployment. status ObjectDeploymentStatus ObjectDeploymentStatus defines the observed state of a ObjectDeployment. ObjectSet # ObjectSet reconciles a collection of objects through ordered phases and aggregates their status.
+apiVersion: package-operator.run/v1alpha1 kind: ClusterObjectTemplate metadata: name: example spec: sources: - apiVersion: sadipscing items: - destination: eirmod key: nonumy kind: elitr name: diam namespace: sed optional: \u0026quot;true\u0026quot; template: consetetur status: conditions: - metav1.Condition phase: ObjectTemplateStatusPhase Field Description metadata metav1.ObjectMeta spec ObjectTemplateSpec ObjectTemplateSpec specification. status ObjectTemplateStatus ObjectTemplateStatus defines the observed state of a ObjectTemplate ie the status of the templated object. ClusterPackage # Example
+apiVersion: package-operator.run/v1alpha1 kind: ClusterPackage metadata: name: example spec: config: runtime.RawExtension image: tempor status: phase: Pending Field Description metadata metav1.ObjectMeta spec PackageSpec Package specification. status PackageStatus PackageStatus defines the observed state of a Package. ObjectDeployment # ObjectDeployment is the Schema for the ObjectDeployments API
+Example
+apiVersion: package-operator.run/v1alpha1 kind: ObjectDeployment metadata: name: example namespace: default spec: revisionHistoryLimit: 10 selector: metav1.LabelSelector template: metadata: metav1.ObjectMeta spec: availabilityProbes: - probes: - condition: status: \u0026quot;True\u0026quot; type: Available fieldsEqual: fieldA: .spec.fieldA fieldB: .status.fieldB selector: kind: group: apps kind: Deployment selector: matchLabels: app.kubernetes.io/name: example-operator phases: - class: ipsum name: lorem objects: - conditionMappings: - destinationType: sit sourceType: dolor object: apiVersion: apps/v1 kind: Deployment metadata: name: example-deployment slices: - amet status: phase:Pending: null Field Description metadata metav1.ObjectMeta spec ObjectDeploymentSpec ObjectDeploymentSpec defines the desired state of a ObjectDeployment. status ObjectDeploymentStatus ObjectDeploymentStatus defines the observed state of a ObjectDeployment. ObjectSet # ObjectSet reconciles a collection of objects through ordered phases and aggregates their status.
 ObjectSets behave similarly to Kubernetes ReplicaSets, by managing a collection of objects and being itself mostly immutable. This object type is able to suspend/pause reconciliation of specific objects to facilitate the transition between revisions.
 Archived ObjectSets may stay on the cluster, to store information about previous revisions.
 A Cluster-scoped version of this API is available as ClusterObjectSet.
 Example
-apiVersion: package-operator.run/v1alpha1 kind: ObjectSet metadata: name: example namespace: default spec: availabilityProbes: - probes: - condition: status: \u0026quot;True\u0026quot; type: Available fieldsEqual: fieldA: .spec.fieldA fieldB: .status.fieldB selector: kind: group: apps kind: Deployment selector: matchLabels: app.kubernetes.io/name: example-operator lifecycleState: Active phases: - class: dolor name: ipsum objects: - object: apiVersion: apps/v1 kind: Deployment metadata: name: example-deployment slices: - sit previous: - name: previous-revision status: phase: Pending Field Description metadata metav1.ObjectMeta spec ObjectSetSpec ObjectSetSpec defines the desired state of a ObjectSet. status ObjectSetStatus ObjectSetStatus defines the observed state of a ObjectSet. ObjectSetPhase # ObjectSetPhase is an internal API, allowing an ObjectSet to delegate a single phase to another custom controller. ObjectSets will create subordinate ObjectSetPhases when .class within the phase specification is set.
+apiVersion: package-operator.run/v1alpha1 kind: ObjectSet metadata: name: example namespace: default spec: availabilityProbes: - probes: - condition: status: \u0026quot;True\u0026quot; type: Available fieldsEqual: fieldA: .spec.fieldA fieldB: .status.fieldB selector: kind: group: apps kind: Deployment selector: matchLabels: app.kubernetes.io/name: example-operator lifecycleState: Active phases: - class: sadipscing name: consetetur objects: - conditionMappings: - destinationType: sed sourceType: elitr object: apiVersion: apps/v1 kind: Deployment metadata: name: example-deployment slices: - diam previous: - name: previous-revision status: phase: Pending Field Description metadata metav1.ObjectMeta spec ObjectSetSpec ObjectSetSpec defines the desired state of a ObjectSet. status ObjectSetStatus ObjectSetStatus defines the observed state of a ObjectSet. ObjectSetPhase # ObjectSetPhase is an internal API, allowing an ObjectSet to delegate a single phase to another custom controller. ObjectSets will create subordinate ObjectSetPhases when .class within the phase specification is set.
 Example
-apiVersion: package-operator.run/v1alpha1 kind: ObjectSetPhase metadata: name: example namespace: default spec: availabilityProbes: - probes: - condition: status: \u0026quot;True\u0026quot; type: Available fieldsEqual: fieldA: .spec.fieldA fieldB: .status.fieldB selector: kind: group: apps kind: Deployment selector: matchLabels: app.kubernetes.io/name: example-operator objects: - object: apiVersion: apps/v1 kind: Deployment metadata: name: example-deployment paused: \u0026quot;true\u0026quot; previous: - name: previous-revision revision: 42 status: conditions: - status: \u0026quot;True\u0026quot; type: Available controllerOf: - group: consetetur kind: amet name: sadipscing namespace: elitr Field Description metadata metav1.ObjectMeta spec ObjectSetPhaseSpec ObjectSetPhaseSpec defines the desired state of a ObjectSetPhase. status ObjectSetPhaseStatus ObjectSetPhaseStatus defines the observed state of a ObjectSetPhase. ObjectSlice # ObjectSlices are referenced by ObjectSets or ObjectDeployments and contain objects to limit the size of ObjectSets and ObjectDeployments when big packages are installed. This is necessary to work around the etcd object size limit of ~1.5MiB and to reduce load on the kube-apiserver.
+apiVersion: package-operator.run/v1alpha1 kind: ObjectSetPhase metadata: name: example namespace: default spec: availabilityProbes: - probes: - condition: status: \u0026quot;True\u0026quot; type: Available fieldsEqual: fieldA: .spec.fieldA fieldB: .status.fieldB selector: kind: group: apps kind: Deployment selector: matchLabels: app.kubernetes.io/name: example-operator objects: - conditionMappings: - destinationType: eirmod sourceType: nonumy object: apiVersion: apps/v1 kind: Deployment metadata: name: example-deployment paused: \u0026quot;true\u0026quot; previous: - name: previous-revision revision: 42 status: conditions: - status: \u0026quot;True\u0026quot; type: Available controllerOf: - group: lorem kind: tempor name: ipsum namespace: dolor Field Description metadata metav1.ObjectMeta spec ObjectSetPhaseSpec ObjectSetPhaseSpec defines the desired state of a ObjectSetPhase. status ObjectSetPhaseStatus ObjectSetPhaseStatus defines the observed state of a ObjectSetPhase. ObjectSlice # ObjectSlices are referenced by ObjectSets or ObjectDeployments and contain objects to limit the size of ObjectSets and ObjectDeployments when big packages are installed. This is necessary to work around the etcd object size limit of ~1.5MiB and to reduce load on the kube-apiserver.
 Example
-apiVersion: package-operator.run/v1alpha1 kind: ObjectSlice metadata: name: example namespace: default objects: - object: apiVersion: apps/v1 kind: Deployment metadata: name: example-deployment Field Description metadata metav1.ObjectMeta objects required
-[]ObjectSetObject Package # Example
-apiVersion: package-operator.run/v1alpha1 kind: Package metadata: name: example namespace: default spec: image: sed status: phase: Pending Field Description metadata metav1.ObjectMeta spec PackageSpec Package specification. status PackageStatus PackageStatus defines the observed state of a Package. ClusterObjectDeploymentSpec # ClusterObjectDeploymentSpec defines the desired state of a ClusterObjectDeployment.
+apiVersion: package-operator.run/v1alpha1 kind: ObjectSlice metadata: name: example namespace: default objects: - conditionMappings: - destinationType: amet sourceType: sit object: apiVersion: apps/v1 kind: Deployment metadata: name: example-deployment Field Description metadata metav1.ObjectMeta objects required
+[]ObjectSetObject ObjectTemplate # ObjectTemplates contain a go template of a Kubernetes manifest. This manifest is then templated with the sources provided in the .Spec.Sources. The sources can only come from objects within the same nampespace as the ObjectTemplate.
+Example
+apiVersion: package-operator.run/v1alpha1 kind: ObjectTemplate metadata: name: example namespace: default spec: sources: - apiVersion: sadipscing items: - destination: eirmod key: nonumy kind: elitr name: diam namespace: sed optional: \u0026quot;true\u0026quot; template: consetetur status: conditions: - metav1.Condition phase: ObjectTemplateStatusPhase Field Description metadata metav1.ObjectMeta spec ObjectTemplateSpec ObjectTemplateSpec specification. status ObjectTemplateStatus ObjectTemplateStatus defines the observed state of a ObjectTemplate ie the status of the templated object. Package # Example
+apiVersion: package-operator.run/v1alpha1 kind: Package metadata: name: example namespace: default spec: config: runtime.RawExtension image: tempor status: phase: Pending Field Description metadata metav1.ObjectMeta spec PackageSpec Package specification. status PackageStatus PackageStatus defines the observed state of a Package. ClusterObjectDeploymentSpec # ClusterObjectDeploymentSpec defines the desired state of a ClusterObjectDeployment.
 Field Description revisionHistoryLimit int32 Number of old revisions in the form of archived ObjectSets to keep. selector required
 metav1.LabelSelector Selector targets ObjectSets managed by this Deployment. template required
 ObjectSetTemplate Template to create new ObjectSets from. Used in:
 ClusterObjectDeployment ClusterObjectDeploymentStatus # ClusterObjectDeploymentStatus defines the observed state of a ClusterObjectDeployment.
-Field Description conditions []metav1.Condition Conditions is a list of status conditions the object is in. phase ObjectDeploymentPhase This field is not part of any API contract
+Field Description conditions []metav1.Condition Conditions is a list of status conditions ths object is in. phase ObjectDeploymentPhase This field is not part of any API contract
 it will go away as soon as kubectl can print conditions!
 When evaluating object state in code, use .Conditions instead. collisionCount int32 Count of hash collisions of the ClusterObjectDeployment. templateHash string Computed TemplateHash. Used in:
 ClusterObjectDeployment ClusterObjectSetPhaseSpec # ClusterObjectSetPhaseSpec defines the desired state of a ClusterObjectSetPhase.
 Field Description paused bool Disables reconciliation of the ClusterObjectSet.
 Only Status updates will still be propagated, but object changes will not be reconciled. revision required
-int64 Revision of the parent ObjectSet to use during object adoption. previous []PreviousRevisionReference Previous revisions of the ClusterObjectSet to adopt objects from. availabilityProbes required
-[]ObjectSetProbe Availability Probes check objects that are part of the package.
+int64 Revision of the parent ObjectSet to use during object adoption. previous []PreviousRevisionReference Previous revisions of the ClusterObjectSet to adopt objects from. availabilityProbes []ObjectSetProbe Availability Probes check objects that are part of the package.
 All probes need to succeed for a package to be considered Available.
 Failing probes will prevent the reconciliation of objects in later phases. objects required
 []ObjectSetObject Objects belonging to this phase. Used in:
 ClusterObjectSetPhase ClusterObjectSetPhaseStatus # ClusterObjectSetPhaseStatus defines the observed state of a ClusterObjectSetPhase.
-Field Description conditions []metav1.Condition Conditions is a list of status conditions the object is in. controllerOf []ControlledObjectReference References all objects controlled by this instance. Used in:
+Field Description conditions []metav1.Condition Conditions is a list of status conditions ths object is in. controllerOf []ControlledObjectReference References all objects controlled by this instance. Used in:
 ClusterObjectSetPhase ClusterObjectSetSpec # ClusterObjectSetSpec defines the desired state of a ClusterObjectSet.
 Field Description lifecycleState ObjectSetLifecycleState Specifies the lifecycle state of the ClusterObjectSet. previous []PreviousRevisionReference Previous revisions of the ClusterObjectSet to adopt objects from. phases []ObjectSetTemplatePhase Reconcile phase configuration for a ObjectSet.
 Phases will be reconciled in order and the contained objects checked
@@ -237,10 +240,13 @@ against given probes before continuing with the next phase. availabilityProbes [
 All probes need to succeed for a package to be considered Available.
 Failing probes will prevent the reconciliation of objects in later phases. Used in:
 ClusterObjectSet ClusterObjectSetStatus # ClusterObjectSetStatus defines the observed state of a ClusterObjectSet.
-Field Description conditions []metav1.Condition Conditions is a list of status conditions the object is in. phase ObjectSetStatusPhase Phase is not part of any API contract
+Field Description conditions []metav1.Condition Conditions is a list of status conditions ths object is in. phase ObjectSetStatusPhase Phase is not part of any API contract
 it will go away as soon as kubectl can print conditions!
 When evaluating object state in code, use .Conditions instead. revision int64 Computed revision number, monotonically increasing. remotePhases []RemotePhaseReference Remote phases aka ClusterObjectSetPhase objects. controllerOf []ControlledObjectReference References all objects controlled by this instance. Used in:
-ClusterObjectSet ControlledObjectReference # References an object controlled by this ObjectSet/ObjectSetPhase.
+ClusterObjectSet ConditionMapping # Field Description sourceType required
+string Source condition type. destinationType required
+string Destination condition type to report into Package Operator APIs. Used in:
+ObjectSetObject ControlledObjectReference # References an object controlled by this ObjectSet/ObjectSetPhase.
 Field Description kind required
 string Object Kind. group required
 string Object Group. name required
@@ -250,22 +256,21 @@ Field Description revisionHistoryLimit int32 Number of old revisions in the form
 metav1.LabelSelector Selector targets ObjectSets managed by this Deployment. template required
 ObjectSetTemplate Template to create new ObjectSets from. Used in:
 ObjectDeployment ObjectDeploymentStatus # ObjectDeploymentStatus defines the observed state of a ObjectDeployment.
-Field Description conditions []metav1.Condition Conditions is a list of status conditions the object is in. phase ObjectDeploymentPhase This field is not part of any API contract
+Field Description conditions []metav1.Condition Conditions is a list of status conditions ths object is in. phase ObjectDeploymentPhase This field is not part of any API contract
 it will go away as soon as kubectl can print conditions!
 When evaluating object state in code, use .Conditions instead. collisionCount int32 Count of hash collisions of the ObjectDeployment. templateHash string Computed TemplateHash. Used in:
 ObjectDeployment ObjectSetObject # An object that is part of the phase of an ObjectSet.
 Field Description object required
-unstructured.Unstructured Used in:
+unstructured.Unstructured conditionMappings []ConditionMapping Maps conditions from this object into the Package Operator APIs. Used in:
 ClusterObjectSetPhaseSpec ObjectSetPhaseSpec ObjectSetTemplatePhase ClusterObjectSlice ObjectSlice ObjectSetPhaseSpec # ObjectSetPhaseSpec defines the desired state of a ObjectSetPhase.
 Field Description paused bool Disables reconciliation of the ObjectSet.
 Only Status updates will still be propagated, but object changes will not be reconciled. revision required
-int64 Revision of the parent ObjectSet to use during object adoption. previous []PreviousRevisionReference Previous revisions of the ObjectSet to adopt objects from. availabilityProbes required
-[]ObjectSetProbe Availability Probes check objects that are part of the package.
+int64 Revision of the parent ObjectSet to use during object adoption. previous []PreviousRevisionReference Previous revisions of the ObjectSet to adopt objects from. availabilityProbes []ObjectSetProbe Availability Probes check objects that are part of the package.
 All probes need to succeed for a package to be considered Available.
 Failing probes will prevent the reconciliation of objects in later phases. objects required
 []ObjectSetObject Objects belonging to this phase. Used in:
 ObjectSetPhase ObjectSetPhaseStatus # ObjectSetPhaseStatus defines the observed state of a ObjectSetPhase.
-Field Description conditions []metav1.Condition Conditions is a list of status conditions the object is in. controllerOf []ControlledObjectReference References all objects controlled by this instance. Used in:
+Field Description conditions []metav1.Condition Conditions is a list of status conditions ths object is in. controllerOf []ControlledObjectReference References all objects controlled by this instance. Used in:
 ObjectSetPhase ObjectSetProbe # ObjectSetProbe define how ObjectSets check their children for their status.
 Field Description probes required
 []Probe Probe configuration parameters. selector required
@@ -277,7 +282,7 @@ against given probes before continuing with the next phase. availabilityProbes [
 All probes need to succeed for a package to be considered Available.
 Failing probes will prevent the reconciliation of objects in later phases. Used in:
 ObjectSet ObjectSetStatus # ObjectSetStatus defines the observed state of a ObjectSet.
-Field Description conditions []metav1.Condition Conditions is a list of status conditions the object is in. phase ObjectSetStatusPhase Phase is not part of any API contract
+Field Description conditions []metav1.Condition Conditions is a list of status conditions ths object is in. phase ObjectSetStatusPhase Phase is not part of any API contract
 it will go away as soon as kubectl can print conditions!
 When evaluating object state in code, use .Conditions instead. revision int64 Computed revision number, monotonically increasing. remotePhases []RemotePhaseReference Remote phases aka ObjectSetPhase objects. controllerOf []ControlledObjectReference References all objects controlled by this instance. Used in:
 ObjectSet ObjectSetTemplate # ObjectSetTemplate describes the template to create new ObjectSets from.
@@ -295,16 +300,34 @@ Phases will be reconciled in order and the contained objects checked
 against given probes before continuing with the next phase. availabilityProbes []ObjectSetProbe Availability Probes check objects that are part of the package.
 All probes need to succeed for a package to be considered Available.
 Failing probes will prevent the reconciliation of objects in later phases. Used in:
-ObjectSetTemplate PackageProbeKindSpec # Kind package probe parameters. selects objects based on Kind and API Group.
+ObjectSetTemplate ObjectTemplateSource # Field Description apiVersion required
+string kind required
+string namespace string name required
+string items required
+[]ObjectTemplateSourceItem optional bool Marks this source as optional.
+The templated object will still be applied if optional sources are not found.
+If the source object is created later on, it will be eventually picked up. Used in:
+ObjectTemplateSpec ObjectTemplateSourceItem # Field Description key required
+string destination required
+string Used in:
+ObjectTemplateSource ObjectTemplateSpec # ObjectTemplateSpec specification.
+Field Description template required
+string Go template of a Kubernetes manifest sources required
+[]ObjectTemplateSource Objects in which configuration parameters are fetched Used in:
+ClusterObjectTemplate ObjectTemplate ObjectTemplateStatus # ObjectTemplateStatus defines the observed state of a ObjectTemplate ie the status of the templated object.
+Field Description conditions []metav1.Condition Conditions is a list of status conditions the templated object is in. phase ObjectTemplateStatusPhase This field is not part of any API contract
+it will go away as soon as kubectl can print conditions!
+When evaluating object state in code, use .Conditions instead. Used in:
+ClusterObjectTemplate ObjectTemplate PackageProbeKindSpec # Kind package probe parameters. selects objects based on Kind and API Group.
 Field Description group required
 string Object Group to apply a probe to. kind required
 string Object Kind to apply a probe to. Used in:
 ProbeSelector PackageSpec # Package specification.
 Field Description image required
 string the image containing the contents of the package
-this image will be unpacked by the package-loader to render the ObjectDeployment for propagating the installation of the package. Used in:
+this image will be unpacked by the package-loader to render the ObjectDeployment for propagating the installation of the package. config runtime.RawExtension Package configuration parameters. Used in:
 ClusterPackage Package PackageStatus # PackageStatus defines the observed state of a Package.
-Field Description conditions []metav1.Condition Conditions is a list of status conditions the object is in. phase PackageStatusPhase This field is not part of any API contract
+Field Description conditions []metav1.Condition Conditions is a list of status conditions ths object is in. phase PackageStatusPhase This field is not part of any API contract
 it will go away as soon as kubectl can print conditions!
 When evaluating object state in code, use .Conditions instead. Used in:
 ClusterPackage Package PreviousRevisionReference # References a previous revision of an ObjectSet or ClusterObjectSet.
@@ -328,8 +351,20 @@ Field Description name required
 string uid required
 types.UID Used in:
 ClusterObjectSetStatus ObjectSetStatus manifests.package-operator.run/v1alpha1 # The package v1alpha1 contains API Schema definitions for the v1alpha1 version of the manifests API group, containing file-based manifests for the packaging infrastructure.
-PackageManifest PackageManifest # Example
-apiVersion: manifests.package-operator.run/v1alpha1 kind: PackageManifest metadata: name: example namespace: default spec: availabilityProbes: - corev1alpha1.ObjectSetProbe phases: - class: ipsum name: lorem scopes: - PackageManifestScope test: template: - context: package: metadata: annotations: map[string]string labels: map[string]string name: sit namespace: amet name: dolor Field Description metadata metav1.ObjectMeta spec PackageManifestSpec PackageManifestSpec represents the spec of the packagemanifest containing the details about phases and availability probes. test PackageManifestTest PackageManifestTest configures test cases. PackageManifestPhase # Field Description name required
+PackageManifest PackageManifestLock PackageManifest # Example
+apiVersion: manifests.package-operator.run/v1alpha1 kind: PackageManifest metadata: name: example namespace: default spec: availabilityProbes: - corev1alpha1.ObjectSetProbe config: openAPIV3Schema: apiextensionsv1.JSONSchemaProps images: - image: sit name: dolor phases: - class: ipsum name: lorem scopes: - PackageManifestScope test: template: - context: config: runtime.RawExtension package: metadata: annotations: map[string]string labels: map[string]string name: consetetur namespace: sadipscing name: amet Field Description metadata metav1.ObjectMeta spec PackageManifestSpec PackageManifestSpec represents the spec of the packagemanifest containing the details about phases and availability probes. test PackageManifestTest PackageManifestTest configures test cases. PackageManifestLock # Example
+apiVersion: manifests.package-operator.run/v1alpha1 kind: PackageManifestLock metadata: name: example namespace: default spec: images: - digest: diam image: sed name: elitr Field Description metadata metav1.ObjectMeta spec PackageManifestLockSpec PackageManifestImage # PackageManifestImage specifies an image tag to be resolved
+Field Description name required
+string Image name to be use to reference it in the templates image required
+string Image identifier (REPOSITORY[:TAG]) Used in:
+PackageManifestSpec PackageManifestLockImage # PackageManifestLockImage contains information about a resolved image
+Field Description name required
+string Image name to be use to reference it in the templates image required
+string Image identifier (REPOSITORY[:TAG]) digest required
+string Image digest Used in:
+PackageManifestLockSpec PackageManifestLockSpec # Field Description images required
+[]PackageManifestLockImage List of resolved images Used in:
+PackageManifestLock PackageManifestPhase # Field Description name required
 string Name of the reconcile phase. Must be unique within a PackageManifest class string If non empty, phase reconciliation is delegated to another controller.
 If set to the string \u0026ldquo;default\u0026rdquo; the built-in controller reconciling the object.
 If set to any other string, an out-of-tree controller needs to be present to handle ObjectSetPhase objects. Used in:
@@ -340,18 +375,23 @@ Either Cluster, Namespaced, or both. phases required
 []PackageManifestPhase Phases correspond to the references to the phases which are going to be the part of the ObjectDeployment/ClusterObjectDeployment. availabilityProbes required
 []corev1alpha1.ObjectSetProbe Availability Probes check objects that are part of the package.
 All probes need to succeed for a package to be considered Available.
-Failing probes will prevent the reconciliation of objects in later phases. Used in:
-PackageManifest PackageManifestTest # PackageManifestTest configures test cases.
+Failing probes will prevent the reconciliation of objects in later phases. config PackageManifestSpecConfig Configuration specification. images required
+[]PackageManifestImage List of images to be resolved Used in:
+PackageManifest PackageManifestSpecConfig # Field Description openAPIV3Schema apiextensionsv1.JSONSchemaProps OpenAPIV3Schema is the OpenAPI v3 schema to use for validation and pruning. Used in:
+PackageManifestSpec PackageManifestTest # PackageManifestTest configures test cases.
 Field Description template []PackageManifestTestCaseTemplate Template testing configuration. Used in:
 PackageManifest PackageManifestTestCaseTemplate # PackageManifestTestCaseTemplate template testing configuration.
 Field Description name required
 string Name describing the test case. context TemplateContext Template data to use in the test case. Used in:
 PackageManifestTest TemplateContext # TemplateContext is available within the package templating process.
 Field Description package required
-TemplateContextPackage TemplateContextPackage represents the (Cluster)Package object requesting this package content. Used in:
+TemplateContextPackage TemplateContextPackage represents the (Cluster)Package object requesting this package content. config runtime.RawExtension Used in:
 PackageManifestTestCaseTemplate TemplateContextObjectMeta # TemplateContextObjectMeta represents a simplified version of metav1.ObjectMeta for use in templates.
 Field Description name required
-string namespace string labels map[string]string annotations map[string]string Used in:
+string namespace required
+string labels required
+map[string]string annotations required
+map[string]string Used in:
 TemplateContextPackage TemplateContextPackage # TemplateContextPackage represents the (Cluster)Package object requesting this package content.
 Field Description metadata required
 TemplateContextObjectMeta TemplateContextObjectMeta represents a simplified version of metav1.ObjectMeta for use in templates. Used in:
