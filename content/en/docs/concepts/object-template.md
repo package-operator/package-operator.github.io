@@ -7,21 +7,22 @@ toc: true
 mermaid: true
 ---
 
-[ClusterObjectTemplate](/docs/getting_started/api-reference#clusterobjecttemplate) and 
-[ObjectTemplate](/docs/getting_started/api-reference#objecttemplate) are APIs defined in Package Operator. 
+[ClusterObjectTemplate](/docs/getting_started/api-reference#clusterobjecttemplate) and
+[ObjectTemplate](/docs/getting_started/api-reference#objecttemplate) are APIs defined in Package Operator.
 These APIs make it possible to create objects by templating a manifest and injecting
 values retrieved from other arbitrary source objects. The source objects are then
-continuously monitored and any change in the source values result in an updated templated object. 
+continuously monitored and any change in the source values result in an updated templated object.
 
 A subset of this functionality can be achieved by mounting secrets or configmaps, however there are
-multiple benefits to using the ObjectTemplate API. First, values can be sourced from any arbitrary 
-kubernetes object, not just secrets or configmaps. Second, when a source value is updated a 
-new version of the templated object will be created i.e. the value will not just be silently 
-updated. Third, when a source value is specified as optional and is not present, package 
-operator will continue to reconcile the templated object. At some point, if the source value becomes 
+multiple benefits to using the ObjectTemplate API. First, values can be sourced from any arbitrary
+kubernetes object, not just secrets or configmaps. Second, when a source value is updated a
+new version of the templated object will be created i.e. the value will not just be silently
+updated. Third, when a source value is specified as optional and is not present, package
+operator will continue to reconcile the templated object. At some point, if the source value becomes
 available, package operator will eventually pick up the value and recreate the templated object.
 
-## Example 
+## Example
+
 Say we have an `ObjectTemplate` called `example-object-template` which templates a package called
 `test-stub`.
 
@@ -48,7 +49,7 @@ spec:
     kind: ConfigMap
     name: database-config
     namespace: default
-    optional: false   
+    optional: false
   template: |
     apiVersion: package-operator.run/v1alpha1
     kind: Package
@@ -59,7 +60,7 @@ spec:
       config: {{toJson .config}}
 ```
 
-`example-object-template` sources values from `database-config` 
+`example-object-template` sources values from `database-config`
 
 ```yaml
 apiVersion: v1
@@ -72,6 +73,7 @@ data:
 ```
 
 and `metadata-config`
+
 ```yaml
 apiVersion: v1
 kind: ConfigMap
@@ -92,13 +94,15 @@ kubectl create -f database-config.yaml
 We can now create `example-object-template`:
 
 ```shell
-kubectl create -f example-object-template.yaml 
+kubectl create -f example-object-template.yaml
 ```
 
 We can retrieve the yaml of the created `package` with:
+
 ```shell
 kubectl get package test-stub -o yaml
 ```
+
 which will return something like:
 
 ```yaml
@@ -140,17 +144,18 @@ status:
 
 We can see that the `database` value from `database-config` was successfully injected
 into the package's config field. Because `metadata-config` is optional, the `nice_to_have_metadata`
-item is filled in as an empty string. 
+item is filled in as an empty string.
 
 If we run `kubectl describe objecttemplate example-object-template`, we can see
-that the status conditions from `test-stub` where copied over to 
-`example-object-template`. 
+that the status conditions from `test-stub` where copied over to
+`example-object-template`.
 
-Now if we create `metadata-config` 
+Now if we create `metadata-config`
+
 ```shell
 kubectl create -f metadata-config.yaml
 ```
 
-and retrieve the package yaml again (`kubectl get package test-stub -o yaml`), 
+and retrieve the package yaml again (`kubectl get package test-stub -o yaml`),
 we see that the `generation` has been increased and that `nice_to_have_metadata`
-has been injected into the package's config.
+has been injected into the package's `config` field.
