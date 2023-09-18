@@ -1,0 +1,372 @@
+<!doctype html><html lang="en-US"><head><meta charset="utf-8"><meta http-equiv="x-ua-compatible" content="ie=edge"><meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no"><link rel="preload" as="font" href="https://package-operator.run/fonts/vendor/jost/jost-v4-latin-regular.woff2" type="font/woff2" crossorigin><link rel="preload" as="font" href="https://package-operator.run/fonts/vendor/jost/jost-v4-latin-500.woff2" type="font/woff2" crossorigin><link rel="preload" as="font" href="https://package-operator.run/fonts/vendor/jost/jost-v4-latin-700.woff2" type="font/woff2" crossorigin><script>(()=>{var t=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches,e=localStorage.getItem("theme");t&&e===null&&(localStorage.setItem("theme","dark"),document.documentElement.setAttribute("data-dark-mode","")),t&&e==="dark"&&document.documentElement.setAttribute("data-dark-mode",""),e==="dark"&&document.documentElement.setAttribute("data-dark-mode","")})()</script><link rel="stylesheet" href="https://package-operator.run/main.136d5f372f3a82e51c431d5c05b49b9d0fcd505404526beb0f012517c75251c34c4e7fa0923634b5f012ef6636fba36c8fc14534ce0350488580e4a4dd16ff10.css" integrity="sha512-E21fNy86guUcQx1cBbSbnQ/NUFQEUmvrDwElF8dSUcNMTn+gkjY0tfAS72Y2+6Nsj8FFNM4DUEiFgOSk3Rb/EA==" crossorigin="anonymous"><noscript><style>img.lazyload{display:none}</style></noscript><meta name="robots" content="index, follow"><meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"><meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"><title>Package Configuration - Package Operator</title><meta name="description" content="In the context of the Package Operator, package configuration enables you to customize your resource deployments using templates. This documentation will introduce you to the core concepts of package configuration, how it works, and how you can use it to streamline your application deployments.
+Understanding Package Configuration # You can think of package configuration as a set of customizable knobs and switches that you can turn to adjust how your application or operator gets deployed."><link rel="canonical" href="https://package-operator.run/docs/concepts/package-configuration/"><script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://package-operator.run/#/schema/organization/1","name":"Doks","url":"https://package-operator.run/","sameAs":["https://twitter.com/getdoks","https://github.com/h-enk/doks"],"logo":{"@type":"ImageObject","@id":"https://package-operator.run/#/schema/image/1","url":"https://package-operator.run/logo-doks.png","width":512,"height":512,"caption":"Doks"},"image":{"@id":"https://package-operator.run/#/schema/image/1"}},{"@type":"WebSite","@id":"https://package-operator.run/#/schema/website/1","url":"https://package-operator.run/","name":"Package Operator","description":"Operator for packaging and managing a collection of arbitrary Kubernetes objects to install software on one or multiple clusters.","publisher":{"@id":"https://package-operator.run/#/schema/organization/1"}},{"@type":"WebPage","@id":"https://package-operator.run/docs/concepts/package-configuration/","url":"https://package-operator.run/docs/concepts/package-configuration/","name":"Package Configuration","description":"","isPartOf":{"@id":"https://package-operator.run/#/schema/website/1"},"about":{"@id":"https://package-operator.run/#/schema/organization/1"},"datePublished":"0001-01-01T00:00:00CET","dateModified":"0001-01-01T00:00:00CET","breadcrumb":{"@id":"https://package-operator.run/docs/concepts/package-configuration/#/schema/breadcrumb/1"},"primaryImageOfPage":{"@id":"https://package-operator.run/docs/concepts/package-configuration/#/schema/image/2"},"inLanguage":"en-US","potentialAction":[{"@type":"ReadAction","target":["https://package-operator.run/docs/concepts/package-configuration/"]}]},{"@type":"BreadcrumbList","@id":"https://package-operator.run/docs/concepts/package-configuration/#/schema/breadcrumb/1","name":"Breadcrumbs","itemListElement":[{"@type":"ListItem","position":1,"item":{"@type":"WebPage","@id":"https://package-operator.run/","url":"https://package-operator.run/","name":"Home"}},{"@type":"ListItem","position":2,"item":{"@type":"WebPage","@id":"https://package-operator.run/docs/","url":"https://package-operator.run/docs/","name":"Docs"}},{"@type":"ListItem","position":3,"item":{"@type":"WebPage","@id":"https://package-operator.run/docs/concepts/","url":"https://package-operator.run/docs/concepts/","name":"Concepts"}},{"@type":"ListItem","position":4,"item":{"@id":"https://package-operator.run/docs/concepts/package-configuration/"}}]},{"@context":"https://schema.org","@graph":[{"@type":"Article","@id":"https://package-operator.run/#/schema/article/1","headline":"Package Configuration","description":"","isPartOf":{"@id":"https://package-operator.run/docs/concepts/package-configuration/"},"mainEntityOfPage":{"@id":"https://package-operator.run/docs/concepts/package-configuration/"},"datePublished":"0001-01-01T00:00:00CET","dateModified":"0001-01-01T00:00:00CET","author":{"@id":"https://package-operator.run/#/schema/person/2"},"publisher":{"@id":"https://package-operator.run/#/schema/organization/1"},"image":{"@id":"https://package-operator.run/docs/concepts/package-configuration/#/schema/image/2"}}]},{"@context":"https://schema.org","@graph":[{"@type":"Person","@id":"https://package-operator.run/#/schema/person/2","name":"Henk Verlinde","sameAs":["https://twitter.com/henkverlinde","https://www.linkedin.com/in/henkverlinde/","https://github.com/h-enk"]}]},{"@context":"https://schema.org","@graph":[{"@type":"ImageObject","@id":"https://package-operator.run/docs/concepts/package-configuration/#/schema/image/2","url":null,"contentUrl":null,"caption":"Package Configuration"}]}]}</script><meta name="theme-color" content="#fff"><link rel="icon" href="https://package-operator.run/favicon.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="https://package-operator.run/%20favicon.svg"><link rel="apple-touch-icon" sizes="180x180" href="https://package-operator.run/%20apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="https://package-operator.run/%20favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="https://package-operator.run/%20favicon-16x16.png"><meta name="go-import" content="package-operator.run git https://github.com/package-operator/package-operator.git"></head><body class="docs single"><div class="sticky-top"><div class="header-bar"></div><header class="navbar navbar-expand-lg navbar-light doks-navbar"><nav class="container-xxl flex-wrap flex-lg-nowrap" aria-label="Main navigation"><a class="navbar-brand order-0" href="/" aria-label="Package Operator">Package Operator</a>
+<button class="btn btn-link order-0 ms-auto d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg></button><div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel"><div class="header-bar"></div><div class="offcanvas-header"><h5 class="offcanvas-title" id="offcanvasExampleLabel">Browse docs</h5><button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button></div><div class="offcanvas-body"><aside class="doks-sidebar mt-n3"><nav id="doks-docs-nav" aria-label="Tertiary navigation"><h3 class="h6 text-uppercase mb-2">Getting Started</h3><ul class="list-unstyled"><li><a class="docs-link" href="https://package-operator.run/docs/getting_started/introduction/">Introduction</a></li><li><a class="docs-link" href="https://package-operator.run/docs/getting_started/architecture/">Architecture</a></li><li><a class="docs-link" href="https://package-operator.run/docs/getting_started/requirements/">Requirements</a></li><li><a class="docs-link" href="https://package-operator.run/docs/getting_started/installation/">Installation</a></li><li><a class="docs-link" href="https://package-operator.run/docs/getting_started/api-reference/">API Reference</a></li></ul><h3 class="h6 text-uppercase mb-2">Guides</h3><ul class="list-unstyled"><li><a class="docs-link" href="https://package-operator.run/docs/guides/packaging-an-application/">Packaging an Application</a></li><li><a class="docs-link" href="https://package-operator.run/docs/guides/packaging-an-operator/">Packaging an Operator</a></li><li><a class="docs-link" href="https://package-operator.run/docs/guides/image-digests/">Working with image digests</a></li></ul><h3 class="h6 text-uppercase mb-2">Concepts</h3><ul class="list-unstyled"><li><a class="docs-link" href="https://package-operator.run/docs/concepts/reconciliation/">Object Reconciliation</a></li><li><a class="docs-link active" href="https://package-operator.run/docs/concepts/package-configuration/">Package Configuration</a></li><li><a class="docs-link" href="https://package-operator.run/docs/concepts/probes/">Probes</a></li><li><a class="docs-link" href="https://package-operator.run/docs/concepts/object-template/">Object Templates</a></li><li><a class="docs-link" href="https://package-operator.run/docs/concepts/phases/">Phases</a></li><li><a class="docs-link" href="https://package-operator.run/docs/concepts/scopes/">Scopes</a></li><li><a class="docs-link" href="https://package-operator.run/docs/concepts/revisions/">Revisions</a></li><li><a class="docs-link" href="https://package-operator.run/docs/concepts/package-format/">Package Format</a></li><li><a class="docs-link" href="https://package-operator.run/docs/concepts/big-packages/">Big Packages</a></li><li><a class="docs-link" href="https://package-operator.run/docs/concepts/hypershift-integration/">HyperShift Integration</a></li></ul></nav></aside></div></div><button class="btn btn-menu order-2 d-block d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDoks" aria-controls="offcanvasDoks" aria-label="Open main menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><div class="offcanvas offcanvas-end border-0 py-lg-1" tabindex="-1" id="offcanvasDoks" data-bs-backdrop="true" aria-labelledby="offcanvasDoksLabel"><div class="header-bar d-lg-none"></div><div class="offcanvas-header d-lg-none"><h2 class="h5 offcanvas-title ps-2" id="offcanvasDoksLabel"><a class="text-dark" href="/">Package Operator</a></h2><button type="button" class="btn-close text-reset me-2" data-bs-dismiss="offcanvas" aria-label="Close main menu"></button></div><div class="offcanvas-body p-4 p-lg-0"><ul class="nav flex-column flex-lg-row align-items-lg-center mt-2 mt-lg-0 ms-lg-2 me-lg-auto"><li class="nav-item"><a class="nav-link ps-0 py-1 active" href="/docs/getting_started/introduction">Docs</a></li><li class="nav-item dropdown"><a class="nav-link dropdown-toggle ps-0 py-1" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Get Started
+<span class="dropdown-caret"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"/></svg></span></a><ul class="dropdown-menu dropdown-menu-main shadow rounded border-0" aria-labelledby="navbarDropdownMenuLink"><li><a class="dropdown-item" href="/docs/getting_started/installation">Installation</a></li><li><a class="dropdown-item" href="/docs/guides">Guides</a></li></ul></li></ul><hr class="text-black-50 my-4 d-lg-none"><form class="doks-search position-relative flex-grow-1 ms-lg-auto me-lg-2"><input id="search" class="form-control is-search" type="search" placeholder="Search docs..." aria-label="Search docs..." autocomplete="off"><div id="suggestions" class="shadow bg-white rounded d-none"></div></form><hr class="text-black-50 my-4 d-lg-none"><ul class="nav flex-column flex-lg-row"><li class="nav-item"><a class="nav-link social-link" href="https://github.com/package-operator/package-operator"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37.0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44.0 0020 4.77 5.07 5.07.0 0019.91 1S18.73.65 16 2.48a13.38 13.38.0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07.0 005 4.77 5.44 5.44.0 003.5 8.55c0 5.42 3.3 6.61 6.44 7A3.37 3.37.0 009 18.13V22"/></svg><small class="ms-2 d-lg-none">GitHub</small></a></li></ul><hr class="text-black-50 my-4 d-lg-none"><button id="mode" class="btn btn-link" type="button" aria-label="Toggle user interface mode">
+<span class="toggle-dark"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></span><span class="toggle-light"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span></button></div></div></nav></header></div><div class="container-xxl"><aside class="doks-sidebar"><nav id="doks-docs-nav" class="collapse d-lg-none" aria-label="Tertiary navigation"><h3 class="h6 text-uppercase mb-2">Getting Started</h3><ul class="list-unstyled"><li><a class="docs-link" href="https://package-operator.run/docs/getting_started/introduction/">Introduction</a></li><li><a class="docs-link" href="https://package-operator.run/docs/getting_started/architecture/">Architecture</a></li><li><a class="docs-link" href="https://package-operator.run/docs/getting_started/requirements/">Requirements</a></li><li><a class="docs-link" href="https://package-operator.run/docs/getting_started/installation/">Installation</a></li><li><a class="docs-link" href="https://package-operator.run/docs/getting_started/api-reference/">API Reference</a></li></ul><h3 class="h6 text-uppercase mb-2">Guides</h3><ul class="list-unstyled"><li><a class="docs-link" href="https://package-operator.run/docs/guides/packaging-an-application/">Packaging an Application</a></li><li><a class="docs-link" href="https://package-operator.run/docs/guides/packaging-an-operator/">Packaging an Operator</a></li><li><a class="docs-link" href="https://package-operator.run/docs/guides/image-digests/">Working with image digests</a></li></ul><h3 class="h6 text-uppercase mb-2">Concepts</h3><ul class="list-unstyled"><li><a class="docs-link" href="https://package-operator.run/docs/concepts/reconciliation/">Object Reconciliation</a></li><li><a class="docs-link active" href="https://package-operator.run/docs/concepts/package-configuration/">Package Configuration</a></li><li><a class="docs-link" href="https://package-operator.run/docs/concepts/probes/">Probes</a></li><li><a class="docs-link" href="https://package-operator.run/docs/concepts/object-template/">Object Templates</a></li><li><a class="docs-link" href="https://package-operator.run/docs/concepts/phases/">Phases</a></li><li><a class="docs-link" href="https://package-operator.run/docs/concepts/scopes/">Scopes</a></li><li><a class="docs-link" href="https://package-operator.run/docs/concepts/revisions/">Revisions</a></li><li><a class="docs-link" href="https://package-operator.run/docs/concepts/package-format/">Package Format</a></li><li><a class="docs-link" href="https://package-operator.run/docs/concepts/big-packages/">Big Packages</a></li><li><a class="docs-link" href="https://package-operator.run/docs/concepts/hypershift-integration/">HyperShift Integration</a></li></ul></nav></aside></div><div class="wrap container-xxl" role="document"><div class="content"><div class="row flex-xl-nowrap"><div class="col-lg-5 col-xl-4 docs-sidebar d-none d-lg-block"><nav id="sidebar-default" class="docs-links" aria-label="Main navigation"><h3 class="h6 text-uppercase mb-2">Getting Started</h3><ul class="list-unstyled"><li><a class="docs-link" href="https://package-operator.run/docs/getting_started/introduction/">Introduction</a></li><li><a class="docs-link" href="https://package-operator.run/docs/getting_started/architecture/">Architecture</a></li><li><a class="docs-link" href="https://package-operator.run/docs/getting_started/requirements/">Requirements</a></li><li><a class="docs-link" href="https://package-operator.run/docs/getting_started/installation/">Installation</a></li><li><a class="docs-link" href="https://package-operator.run/docs/getting_started/api-reference/">API Reference</a></li></ul><h3 class="h6 text-uppercase mb-2">Guides</h3><ul class="list-unstyled"><li><a class="docs-link" href="https://package-operator.run/docs/guides/packaging-an-application/">Packaging an Application</a></li><li><a class="docs-link" href="https://package-operator.run/docs/guides/packaging-an-operator/">Packaging an Operator</a></li><li><a class="docs-link" href="https://package-operator.run/docs/guides/image-digests/">Working with image digests</a></li></ul><h3 class="h6 text-uppercase mb-2">Concepts</h3><ul class="list-unstyled"><li><a class="docs-link" href="https://package-operator.run/docs/concepts/reconciliation/">Object Reconciliation</a></li><li><a class="docs-link active" href="https://package-operator.run/docs/concepts/package-configuration/">Package Configuration</a></li><li><a class="docs-link" href="https://package-operator.run/docs/concepts/probes/">Probes</a></li><li><a class="docs-link" href="https://package-operator.run/docs/concepts/object-template/">Object Templates</a></li><li><a class="docs-link" href="https://package-operator.run/docs/concepts/phases/">Phases</a></li><li><a class="docs-link" href="https://package-operator.run/docs/concepts/scopes/">Scopes</a></li><li><a class="docs-link" href="https://package-operator.run/docs/concepts/revisions/">Revisions</a></li><li><a class="docs-link" href="https://package-operator.run/docs/concepts/package-format/">Package Format</a></li><li><a class="docs-link" href="https://package-operator.run/docs/concepts/big-packages/">Big Packages</a></li><li><a class="docs-link" href="https://package-operator.run/docs/concepts/hypershift-integration/">HyperShift Integration</a></li></ul></nav></div><nav class="docs-toc d-none d-xl-block col-xl-3" aria-label="Secondary navigation"><div class="d-xl-none"><button class="btn btn-outline-primary btn-sm doks-toc-toggle collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#onThisPage" aria-controls="doks-docs-nav" aria-expanded="false" aria-label="Toggle On this page navigation">
+<span>On this page</span>
+<span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" class="doks doks-expand" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Expand</title><polyline points="7 13 12 18 17 13"/><polyline points="7 6 12 11 17 6"/></svg><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" class="doks doks-collapse" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Collapse</title><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg></span></button><div class="collapse" id="onThisPage"><div class="card card-body mt-3 py-1"><div class="page-links"><nav id="TableOfContents"><ul><li><a href="#understanding-package-configuration">Understanding Package Configuration</a></li><li><a href="#benefits-of-package-configuration">Benefits of Package Configuration</a></li><li><a href="#defining-package-configuration">Defining Package Configuration</a></li><li><a href="#examples">Examples</a><ul><li><a href="#example-1-customizing-image-versions">Example 1: Customizing Image Versions</a></li><li><a href="#example-2-using-package-configuration-in-a-deployment-template-with-a-clusterobjecttemplate">Example 2: Using Package Configuration in a Deployment Template with a ClusterObjectTemplate</a></li></ul></li><li><a href="#error-messages-and-troubleshooting">Error Messages and Troubleshooting</a></li><li><a href="#conclusion">Conclusion</a></li></ul></nav></div></div></div></div><div class="page-links d-none d-xl-block"><h3>On this page</h3><nav id="TableOfContents"><ul><li><a href="#understanding-package-configuration">Understanding Package Configuration</a></li><li><a href="#benefits-of-package-configuration">Benefits of Package Configuration</a></li><li><a href="#defining-package-configuration">Defining Package Configuration</a></li><li><a href="#examples">Examples</a><ul><li><a href="#example-1-customizing-image-versions">Example 1: Customizing Image Versions</a></li><li><a href="#example-2-using-package-configuration-in-a-deployment-template-with-a-clusterobjecttemplate">Example 2: Using Package Configuration in a Deployment Template with a ClusterObjectTemplate</a></li></ul></li><li><a href="#error-messages-and-troubleshooting">Error Messages and Troubleshooting</a></li><li><a href="#conclusion">Conclusion</a></li></ul></nav></div></nav><main class="docs-content col-lg-11 col-xl-9"><h1>Package Configuration</h1><p class="lead"></p><nav class="d-xl-none" aria-label="Quaternary navigation"><div class="d-xl-none"><button class="btn btn-outline-primary btn-sm doks-toc-toggle collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#onThisPage" aria-controls="doks-docs-nav" aria-expanded="false" aria-label="Toggle On this page navigation">
+<span>On this page</span>
+<span><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" class="doks doks-expand" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Expand</title><polyline points="7 13 12 18 17 13"/><polyline points="7 6 12 11 17 6"/></svg><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" class="doks doks-collapse" fill="none" stroke="currentcolor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><title>Collapse</title><polyline points="17 11 12 6 7 11"/><polyline points="17 18 12 13 7 18"/></svg></span></button><div class="collapse" id="onThisPage"><div class="card card-body mt-3 py-1"><div class="page-links"><nav id="TableOfContents"><ul><li><a href="#understanding-package-configuration">Understanding Package Configuration</a></li><li><a href="#benefits-of-package-configuration">Benefits of Package Configuration</a></li><li><a href="#defining-package-configuration">Defining Package Configuration</a></li><li><a href="#examples">Examples</a><ul><li><a href="#example-1-customizing-image-versions">Example 1: Customizing Image Versions</a></li><li><a href="#example-2-using-package-configuration-in-a-deployment-template-with-a-clusterobjecttemplate">Example 2: Using Package Configuration in a Deployment Template with a ClusterObjectTemplate</a></li></ul></li><li><a href="#error-messages-and-troubleshooting">Error Messages and Troubleshooting</a></li><li><a href="#conclusion">Conclusion</a></li></ul></nav></div></div></div></div><div class="page-links d-none d-xl-block"><h3>On this page</h3><nav id="TableOfContents"><ul><li><a href="#understanding-package-configuration">Understanding Package Configuration</a></li><li><a href="#benefits-of-package-configuration">Benefits of Package Configuration</a></li><li><a href="#defining-package-configuration">Defining Package Configuration</a></li><li><a href="#examples">Examples</a><ul><li><a href="#example-1-customizing-image-versions">Example 1: Customizing Image Versions</a></li><li><a href="#example-2-using-package-configuration-in-a-deployment-template-with-a-clusterobjecttemplate">Example 2: Using Package Configuration in a Deployment Template with a ClusterObjectTemplate</a></li></ul></li><li><a href="#error-messages-and-troubleshooting">Error Messages and Troubleshooting</a></li><li><a href="#conclusion">Conclusion</a></li></ul></nav></div></nav><p>In the context of the Package Operator, package configuration
+enables you to customize your resource deployments using templates.
+This documentation will introduce you to the core concepts of
+package configuration, how it works, and how you can use it to
+streamline your application deployments.</p><h2 id="understanding-package-configuration">Understanding Package Configuration <a href="#understanding-package-configuration" class="anchor" aria-hidden="true">#</a></h2><p>You can think of package configuration as a set of customizable
+knobs and switches that you can turn to adjust how your
+application or operator gets deployed. Using these knobs, you can
+adjust the deployment to your needs without changing the actual
+code. Package configuration includes defining how you create and
+customize resources using templates.</p><p>The main components involved in package configuration are:</p><ol><li><strong>Templates</strong>: These files have placeholders that you will
+replace with values from the configuration context.</li><li><strong>Configuration Definition</strong>: The configuration definition
+specifies the structure of the configuration parameters that you
+can customize when deploying a package. It provides information
+about properties, data types, default values, and required or optional settings.</li><li><strong>Configuration Context</strong>: During deployment, the configuration
+context is the set of values and information used to replace
+placeholders in templates. It includes details about the package, images,
+configuration settings, and the environment.
+The configuration context contains the values that apply to a
+particular deployment, so you can tailor the package to fit your needs.</li></ol><h2 id="benefits-of-package-configuration">Benefits of Package Configuration <a href="#benefits-of-package-configuration" class="anchor" aria-hidden="true">#</a></h2><p>Package configuration offers several advantages when deploying applications or operators
+using the Package Operator:</p><ul><li><p><strong>Simplified deployment:</strong> Package configuration streamlines the
+deployment process by allowing you to define customizable values
+without modifying the underlying resource templates.</p></li><li><p><strong>Consistency:</strong> With package configuration, you ensure consistency
+across deployments, as you can enforce predefined configurations for
+different environments.</p></li><li><p><strong>Customization without code changes:</strong> Package configuration enables
+you to tailor your deployment without altering the application or
+operator codebase. You can easily switch configurations for various use cases.</p></li></ul><h2 id="defining-package-configuration">Defining Package Configuration <a href="#defining-package-configuration" class="anchor" aria-hidden="true">#</a></h2><p>You have the option to include a <code>config</code> section within your packages.
+Define this section within the package manifest using OpenAPI
+specifications. It&rsquo;s good practice to define values that are
+essential for successful package deployment as <code>required</code>, and to set
+default values where applicable. By incorporating default values, you
+prevent deployment failures caused by missing mandatory values.</p><p><strong>NOTE:</strong> These two solutions are mutually
+exclusive. You can either mark a property as
+<code>required</code> to enforce the necessity of providing
+a value, thereby preventing failure, or assign a
+default value to ensure success even
+when no value is provided. It&rsquo;s important not to
+use both approaches for the same property.</p><p>When creating your package, consider the essential configuration
+parameters that you will need to customize. Provide default values
+for properties that you can set up, but you can change them if you want to.</p><p>Here&rsquo;s a simple example of specifying a configuration schema in your package <code>manifest.yaml</code>:</p><pre><code class="language-yaml">spec:
+  config:
+    openAPIV3Schema:
+      properties:
+        nginxImage:
+          description: nginxImage is the reference to the image
+          containing nginx.
+          type: string
+          default: &quot;nginx:latest&quot;
+        nginxWebrootConfigmap:
+          description: nginxWebrootConfigmap is the name of an
+          already existing configmap in the package namespace that
+          will be mounted into the nginx containers as webroot folder.
+          type: string
+      required:
+        - nginxWebrootConfigmap
+      type: object
+</code></pre><p>This example sets the default <code>nginxImage</code> to <code>nginx:latest</code> and declares the key
+<code>nginxWebrootConfigmap</code> as required.</p><hr><p>Next, you add the following to the template section of your <code>deployment.yaml.gotmpl</code>:</p><pre><code class="language-yaml">template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: nginx
+        app.kubernetes.io/instance: &quot;{{ .package.metadata.name }}&quot;
+    spec:
+      containers:
+        - name: nginx
+          image: &quot;{{ .config.nginxImage }}&quot;
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: nginx-webroot
+              mountPath: /usr/share/nginx/html
+      volumes:
+        - name: nginx-webroot
+          configMap:
+            name: nginx-webroot
+</code></pre><hr><p>Finally, you configure the example <code>package.yaml</code> as follows and deploy it:</p><pre><code class="language-yaml">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-webroot
+data:
+  index.html: |-
+    &lt;html&gt;
+      &lt;body&gt;
+        &lt;h1&gt;hi there&lt;/h1&gt;
+      &lt;/body&gt;
+    &lt;/html&gt;
+---
+apiVersion: package-operator.run/v1alpha1
+kind: Package
+metadata:
+  name: nginx-webroot
+spec:
+  image: quay.io/yourquayusername/nginx:tag
+  config:
+    nginxWebrootConfigmap: nginx-webroot
+</code></pre><hr><p>Verify the configuration by running <code>curl</code> on the deployment.</p><p>Example:</p><pre><code class="language-bash"> kubectl exec deploy/nginx-webroot  -- curl -s localhost
+</code></pre><p>Example Output:</p><pre><code class="language-bash">&lt;html&gt;
+  &lt;body&gt;
+    &lt;h1&gt;hi there&lt;/h1&gt;
+  &lt;/body&gt;
+</code></pre><h2 id="examples">Examples <a href="#examples" class="anchor" aria-hidden="true">#</a></h2><p>Let’s examine a couple more examples to illustrate how package configuration works.</p><h3 id="example-1-customizing-image-versions">Example 1: Customizing Image Versions <a href="#example-1-customizing-image-versions" class="anchor" aria-hidden="true">#</a></h3><p>Suppose you have multiple applications with different frontend and
+backend images and ports. You want users to easily customize the
+images and ports based on the application. Here&rsquo;s a step-by-step process:</p><ol><li><p><strong>Create a PackageManifest</strong><br>Define the scope and phases of your package in your <code>manifest.yaml</code>:</p><pre><code class="language-yaml">apiVersion: manifests.package-operator.run/v1alpha1
+kind: PackageManifest
+metadata:
+  name: frontend-backend
+spec:
+  scopes:
+  - Namespaced
+  phases:
+  - name: deploy
+  availabilityProbes:
+  - probes:
+    - condition:
+        type: Available
+        status: &quot;True&quot;
+    - fieldsEqual:
+        fieldA: .status.updatedReplicas
+        fieldB: .status.replicas
+    selector:
+      kind:
+        group: apps
+        kind: Deployment
+</code></pre></li><li><p><strong>Define Package Configuration</strong><br>Under the <code>config</code> section, add the configuration schema for your
+package to your <code>manifest.yaml</code>. Allow users define image and port versions.</p><pre><code class="language-yaml">config:
+  openAPIV3Schema:
+  properties:
+    frontendImage:
+       description: frontendImage is the reference to the image containing the frontend application.
+       type: string
+    databaseImage:
+       description: backendImage is the reference to the image containing the backend application.
+       type: string
+    frontendPort:
+       description: Port for the frontend container.
+       type: integer
+       default: 80
+    databasePort:
+       description: Port for the database container.
+       type: integer
+       default: 5432
+  type: object
+</code></pre></li><li><p><strong>Add the following to the template section of your <code>deployment.yaml.gotmpl</code>:</strong></p><pre><code class="language-yaml"> template:
+   metadata:
+     labels:
+       app.kubernetes.io/name: frontend-backend
+       app.kubernetes.io/instance: &quot;{{ .package.metadata.name }}&quot;
+   spec:
+     containers:
+       - name: frontend
+         image: &quot;{{ .config.frontendImage }}&quot;
+         ports:
+           - containerPort: {{ .config.frontendPort }}
+
+       - name: database
+         image: &quot;{{ .config.databaseImage }}&quot;
+         ports:
+           - containerPort: {{ .config.databasePort }}
+</code></pre></li><li><p><strong>Build and push your package to your image repository:</strong></p><pre><code class="language-yaml">kubectl package validate &lt;your-template-directory&gt;
+</code></pre><pre><code class="language-yaml">kubectl package build -t &lt;your-image-reference-goes-here&gt; --push &lt;your-template-directory&gt;
+</code></pre></li><li><p><strong>Apply Custom Configuration</strong></p><p>In your Package resource, users can add values for the configured properties.
+For example:</p><pre><code class="language-yaml">apiVersion: package-operator.run/v1alpha1
+kind: Package
+metadata:
+  name: frontend-backend-deploy
+spec:
+  image: quay.io/yourquayusername/frontend-backend-deploy:v2
+  config:
+    // configuration for abc-app
+    frontendImage: quay.io/yourquayusername/nginx:abc-appv1
+    databaseImage: quay.io/yourquayusername/postgres:abc-appv14.5
+    frontendPort: 8080
+    databasePort: 5433
+</code></pre></li><li><p><strong>Deploy the package</strong>:</p><pre><code class="language-yaml"> kubectl create -f package.yaml
+</code></pre></li><li><p><strong>Verify the package status</strong>:</p><pre><code class="language-yaml"> kubectl get packages
+</code></pre></li></ol><h3 id="example-2-using-package-configuration-in-a-deployment-template-with-a-clusterobjecttemplate">Example 2: Using Package Configuration in a Deployment Template with a ClusterObjectTemplate <a href="#example-2-using-package-configuration-in-a-deployment-template-with-a-clusterobjecttemplate" class="anchor" aria-hidden="true">#</a></h3><p>Imagine you are an engineer responsible for managing deployments in a
+Kubernetes cluster using the Package Operator. You have a package
+application, and you want to streamline the stage and production
+deployment process by using package configuration and <a href="https://package-operator.run/docs/getting_started/api-reference/#clusterobjecttemplate">ClusterObjectTemplates</a>.</p><p><strong>Application Configuration</strong></p><ul><li>You have built your package application as a container image and
+pushed it to a registry such as <code>quay.io/yourusername/frontend-deployment:v1</code>.</li><li>Your deployment template (<code>deployment.yaml.gotmpl</code>) consists of Package Configuration
+for app name, image, and namespace.</li></ul><p>Example <code>deployment.yaml.gotmpl</code>:</p><pre><code class="language-yaml">   apiVersion: apps/v1
+   kind: Deployment
+   metadata:
+     name: {{ .package.metadata.name }}-deployment
+     namespace: &quot;{{ .config.namespace }}&quot;
+     labels:
+       app.kubernetes.io/name: &quot;{{ .config.app }}&quot;
+       app.kubernetes.io/instance: &quot;{{ .package.metadata.name }}&quot;
+     annotations:
+       package-operator.run/phase: deploy
+   spec:
+     replicas: 3
+     selector:
+       matchLabels:
+         app.kubernetes.io/name: &quot;{{ .config.app }}&quot;
+     template:
+       metadata:
+         labels:
+           app.kubernetes.io/name: &quot;{{ .config.app }}&quot;
+       spec:
+         containers:
+         - name: &quot;{{ .config.app }}&quot;
+           image: &quot;{{ .config.image }}&quot;
+</code></pre><p>Example <code>manifest.yaml</code>:</p><pre><code class="language-yaml">   apiVersion: manifests.package-operator.run/v1alpha1
+   kind: PackageManifest
+   metadata:
+     name: my-deployment-package
+   spec:
+     scopes:
+       - Namespaced
+       - Cluster
+     phases:
+       - name: deploy
+     availabilityProbes:
+     - probes:
+       - condition:
+           type: Available
+           status: &quot;True&quot;
+       - fieldsEqual:
+           fieldA: .status.updatedReplicas
+           fieldB: .status.replicas
+       selector:
+         kind:
+           group: apps
+           kind: Deployment
+     config:
+       openAPIV3Schema:
+         properties:
+           namespace:
+             description: The namespace to deploy to.
+             type: string
+           app:
+             description: The name of the application.
+             type: string
+           image:
+             description: The image to use for the deployment.
+             type: string
+         required:
+           - namespace
+           - app
+           - image
+         type: object
+</code></pre><ol><li><p><strong>Create a ConfigMap with Application Configuration:</strong></p><p>Create a ConfigMap that stores the configuration data for your application.</p><pre><code class="language-yaml">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: myapp-config
+  namespace: integration
+data:
+  namespace: production-namespace
+  image: quay.io/yourusername/wizard:stable
+  app: wizard
+</code></pre></li><li><p><strong>Apply the ConfigMap to your cluster:</strong></p><pre><code class="language-bash">kubectl apply -f configmap.yaml
+</code></pre></li><li><p><strong>Create a ClusterObjectTemplate:</strong></p><p>Create a ClusterObjectTemplate that references the ConfigMap and
+uses it to template the PackageManifest.</p><p>Use the following YAML and apply it:</p><pre><code class="language-yaml">apiVersion: package-operator.run/v1alpha1
+kind: ClusterObjectTemplate
+metadata:
+  name: cool-new-app-template
+  namespace: integration
+spec:
+  sources:
+    - apiVersion: v1
+      items:
+        - destination: .namespace
+          key: .data.namespace
+        - destination: .image
+          key: .data.image
+        - destination: .app
+          key: .data.app
+      kind: ConfigMap
+      name: myapp-config
+      namespace: integration
+      optional: false
+  template: |
+    apiVersion: package-operator.run/v1alpha1
+    kind: Package
+    metadata:
+      name: &quot;{{ .config.name }}&quot;
+      namespace: &quot;{{ .config.namespace }}&quot;
+    spec:
+      image: &quot;quay.io/yourusername/frontend-deployment:v1&quot;
+      config: {{toJson .config}}
+</code></pre></li><li><p><strong>Apply the ClusterObjectTemplate:</strong></p><p>Apply the ClusterObjectTemplate using the <code>kubectl apply -f clusterobjecttemplate.yaml</code>
+command.</p><p>Use the <code>kubectl describe clusterobjecttemplates &lt;your-template-name></code> command
+to verify the ClusterObjectTemplate status.</p><p>Example:</p><pre><code class="language-bash">kubectl describe clusterobjecttemplates cool-new-app-template
+... snipped for readability
+Status:
+  Conditions:
+    Last Transition Time:  2023-09-09T20:17:47Z
+    Message:               Unpack job succeeded
+    Observed Generation:   1
+    Reason:                UnpackSuccess
+    Status:                True
+    Type:                  Unpacked
+</code></pre></li><li><p><strong>Create Packages Based on ClusterObjectTemplate:</strong></p><p>When the ClusterObjectTemplate is applied, it creates Package
+objects based on the initial configuration from the ConfigMap.</p><p>These Package objects represent your deployments.
+You can view the created Package objects using <code>kubectl get packages -A</code>
+and <code>kubectl get deployments -A</code> to view the corresponding deployments.</p><p>Example:</p><pre><code class="language-bash">kubectl get packages -A
+NAMESPACE              NAME            STATUS      AGE
+production-namespace   wizard          Available   3m21s
+</code></pre><pre><code class="language-bash">kubectl get deployments -n production-namespace
+NAME                READY   UP-TO-DATE   AVAILABLE   AGE
+wizard-deployment   3/3     3            3           5m15s
+</code></pre></li><li><p><strong>Update the Application Configuration:</strong></p><p>Update the configuration of your application and modify the data in the
+<code>myapp-config</code> ConfigMap.</p><p>Example:</p><pre><code class="language-yaml">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: myapp-config
+  namespace: integration
+data:
+  namespace: production-namespace
+  image: quay.io/yourusername/wizard:v3
+  app: wizard
+</code></pre></li><li><p><strong>Apply the ConfigMap:</strong></p><p>Apply the ConfigMap by issuing:
+<code>kubectl apply -f configmap.yaml</code>.</p><p>The package status will change status to <strong>Progressing</strong> and then <strong>Available</strong>:</p><p>Example:</p><pre><code class="language-bash">kubectl get packages -A
+NAMESPACE              NAME            STATUS        AGE
+production-namespace   wizard          Progressing   7m43s
+</code></pre><pre><code class="language-bash">kubectl get packages -A
+NAMESPACE              NAME            STATUS      AGE
+production-namespace   wizard          Available   8m11s
+</code></pre></li><li><p><strong>Verify the deployment:</strong></p><p>Verify the deployment is using the updated image:</p><pre><code class="language-bash">kubectl describe deployment wizard-deployment -n production-namespace
+...
+Pod Template:
+  Labels:  app.kubernetes.io/name=wizard
+  Containers:
+  wizard:
+   Image:        wizard:v3
+   Port:         &lt;none&gt;
+   Host Port:    &lt;none&gt;
+   Environment:  &lt;none&gt;
+   Mounts:       &lt;none&gt;
+  Volumes:        &lt;none&gt;
+</code></pre></li><li><p><strong>Update the ConfigMap for Stage Deployment:</strong></p><p>To create a deployment for stage, update the ConfigMap with the details
+of the stage deployment.</p><p>Example:</p><pre><code class="language-yaml">apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: myapp-config
+  namespace: integration
+data:
+  namespace: staging-namespace
+  image: quay.io/yourusername/wizard:2.0.0-beta
+  app: wizard
+</code></pre></li><li><p><strong>Apply the ConfigMap to your cluster:</strong></p><p>Apply the ConfigMap to your cluster, by issuing:</p><pre><code class="language-bash">kubectl apply -f configmap.yaml
+</code></pre><p>When you apply the ConfigMap, the wizard package is created in the
+staging-namespace, along with the deployments.</p></li><li><p><strong>Verify the Package object creation and deployments:</strong></p><pre><code class="language-bash">kubectl get packages -A
+NAMESPACE              NAME            STATUS      AGE
+production-namespace   wizard          Available   70m
+staging-namespace      wizard          Available   51s
+</code></pre><pre><code class="language-bash">kubectl get deployments -A
+production-namespace      wizard-deployment          3/3     3            3           73m
+staging-namespace         wizard-deployment          3/3     3            3           4m47s
+
+</code></pre></li></ol><p>These steps guided you through deploying and updating your application using package
+configuration and ClusterObjectTemplates with the Package Operator.</p><h2 id="error-messages-and-troubleshooting">Error Messages and Troubleshooting <a href="#error-messages-and-troubleshooting" class="anchor" aria-hidden="true">#</a></h2><p>During the package configuration process, you may encounter common
+errors such as missing or incorrectly formatted values. Here are some
+troubleshooting tips:</p><ul><li><strong>Check Property Names:</strong> Ensure that property names in your configuration
+match those defined in the package manifest&rsquo;s configuration schema.</li><li><strong>Data Type Mismatch:</strong> Verify that the data types of configured values match
+the expected types in the schema.</li><li><strong>Test Framework:</strong> Use the Package Operator <a href="https://package-operator.run/docs/guides/packaging-an-application/#testing-templates">test framework</a>
+to test your templates.</li><li><strong>Review Logs:</strong> Review the Package Operator manager logs using
+the <code>kubectl logs -f package-operator-manager&lt;pod> -n package-operator-system</code> command.</li></ul><h2 id="conclusion">Conclusion <a href="#conclusion" class="anchor" aria-hidden="true">#</a></h2><p>These examples illustrate how you can leverage package configuration to provide a
+streamlined and customized way to deploy applications in Kubernetes using the Package
+Operator. The power of package configuration lies in its ability to abstract
+and parameterize values in your resources, making deployments flexible and adaptable.</p><div class="page-footer-meta d-flex flex-column flex-md-row justify-content-between"></div><div class="docs-navigation d-flex justify-content-between"><a href="/docs/concepts/reconciliation/"><div class="card my-1"><div class="card-body py-2">&larr; Object Reconciliation</div></div></a><a class="ms-auto" href="/docs/concepts/probes/"><div class="card my-1"><div class="card-body py-2">Probes &rarr;</div></div></a></div></main></div></div></div><footer class="footer text-muted"><div class="container-xxl"><div class="row"><div class="col-lg-8 order-last order-lg-first"><ul class="list-inline"><li class="list-inline-item">Powered by <a class="text-muted" href="https://gohugo.io/">Hugo</a> and <a class="text-muted" href="https://getdoks.org/">Doks</a></li></ul></div><div class="col-lg-8 order-first order-lg-last text-lg-end"><ul class="list-inline"></ul></div></div></div></footer><script src="/js/bootstrap.min.44fc78ffe68ed681865871fdec9750ca44c6febe429bf0779d114896edde0f92b92891b983ef933484a02a2c7ceb3d1fa6392c39179350ad04197a153a2db970.js" integrity="sha512-RPx4/+aO1oGGWHH97JdQykTG/r5Cm/B3nRFIlu3eD5K5KJG5g++TNISgKix86z0fpjksOReTUK0EGXoVOi25cA==" crossorigin="anonymous" defer></script>
+<script src="/js/highlight.min.0ca52c0c3265c6a30e142e56d1d279a5abdc4854e537bd615d480b6d9d2eef537681e36cfc97d563c0f7bb1b61273d51616606da5cbdca3d59339dcf1691bbed.js" integrity="sha512-DKUsDDJlxqMOFC5W0dJ5pavcSFTlN71hXUgLbZ0u71N2geNs/JfVY8D3uxthJz1RYWYG2ly9yj1ZM53PFpG77Q==" crossorigin="anonymous" defer></script>
+<script src="/main.min.69d35aeb30daacb0dce36b2e5bb73d1c7f537e4fa2576cc91b016c5f795053df9b5e664d87fe45fe755bd2fe67f6be177bfb017bac93a0e97bd34420dd63eff3.js" integrity="sha512-adNa6zDarLDc42suW7c9HH9Tfk+iV2zJGwFsX3lQU9+bXmZNh/5F/nVb0v5n9r4Xe/sBe6yToOl700Qg3WPv8w==" crossorigin="anonymous" defer></script>
+<script src="https://package-operator.run/index.min.697679c350119bfe6b69560878a1617654be19d84f018e6b67cb6e839b7669e018905b08f717c79a9993cabc08af3dd668f5331df3e7ff2288b86c32566a76b8.js" integrity="sha512-aXZ5w1ARm/5raVYIeKFhdlS+GdhPAY5rZ8tug5t2aeAYkFsI9xfHmpmTyrwIrz3WaPUzHfPn/yKIuGwyVmp2uA==" crossorigin="anonymous" defer></script></body></html>
